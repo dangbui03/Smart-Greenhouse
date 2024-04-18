@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+    overflow: overlay;
+    background-image: url("../../public/bg/close-up-picture-sapling-plant-is-growing.jpg");
+    background-size: 100%;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+.navArea {
+  grid-area: navArea;
+}
+
+.chartArea {
+  grid-area: chartArea;
+}
+
+.SidebarArea {
+  grid-area: SidebarArea;
+  grid-template: 1fr 1fr / 1fr 1fr;
+}
+
+.gridLayout {
+  grid-template-areas: 
+  'navArea navArea navArea navArea'
+  'chartArea chartArea chartArea SidebarArea'
+  'chartArea chartArea chartArea SidebarArea'
+  'chartArea chartArea chartArea SidebarArea'
+  'chartArea chartArea chartArea SidebarArea'
+  'chartArea chartArea chartArea SidebarArea'
+  'chartArea chartArea chartArea SidebarArea'
+  'chartArea chartArea chartArea SidebarArea'
+  'chartArea chartArea chartArea SidebarArea'
+  'chartArea chartArea chartArea SidebarArea'
+  'chartArea chartArea chartArea SidebarArea'
+  'chartArea chartArea chartArea SidebarArea'
+  'chartArea chartArea chartArea SidebarArea'
+  'chartArea chartArea chartArea SidebarArea'
+  'chartArea chartArea chartArea SidebarArea'
+  'chartArea chartArea chartArea SidebarArea'
+  'chartArea chartArea chartArea SidebarArea'
+  'chartArea chartArea chartArea SidebarArea';
+}
+
+::-webkit-scrollbar {
+  background: transparent;
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #355e3b;
+  border-radius: 10px; 
+}
+
