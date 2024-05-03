@@ -1,8 +1,47 @@
+"use client";
 import React from "react";
 import Image from "next/image";
+import { deleteCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
+import useAuth from "@/app/hook/useAuth";
+import { AuthContextType } from "@/app/context/authContext";
+import toast from "react-hot-toast";
+
 export default function SignOutButton() {
+  const { authContext, setAuthContext } = useAuth() as AuthContextType;
+  const router = useRouter();
+  const signOut = () => {
+    deleteCookie("user");
+    setAuthContext(undefined);
+    router.push("/", { scroll: false });
+  };
   return (
-    <button>
+    <button
+      onClick={() =>
+        toast(
+          <div className="flex flex-col items-center gap-5">
+            <div>Are you sure want to sign out?</div>
+            <div className="flex gap-10">
+              <button
+                className=" bg-red-600 rounded-xl p-2"
+                onClick={() => {
+                  toast.remove();
+                  signOut();
+                }}
+              >
+                Yes
+              </button>
+              <button
+                className=" bg-green-600 rounded-xl p-2"
+                onClick={() => toast.remove()}
+              >
+                No
+              </button>
+            </div>
+          </div>
+        )
+      }
+    >
       <Image
         src="/icon/sign-in-svgrepo-com.svg"
         alt="sign out"

@@ -30,24 +30,24 @@ body {
 
 .gridLayout {
   grid-template-areas: 
-  'navArea navArea navArea navArea'
-  'chartArea chartArea chartArea SidebarArea'
-  'chartArea chartArea chartArea SidebarArea'
-  'chartArea chartArea chartArea SidebarArea'
-  'chartArea chartArea chartArea SidebarArea'
-  'chartArea chartArea chartArea SidebarArea'
-  'chartArea chartArea chartArea SidebarArea'
-  'chartArea chartArea chartArea SidebarArea'
-  'chartArea chartArea chartArea SidebarArea'
-  'chartArea chartArea chartArea SidebarArea'
-  'chartArea chartArea chartArea SidebarArea'
-  'chartArea chartArea chartArea SidebarArea'
-  'chartArea chartArea chartArea SidebarArea'
-  'chartArea chartArea chartArea SidebarArea'
-  'chartArea chartArea chartArea SidebarArea'
-  'chartArea chartArea chartArea SidebarArea'
-  'chartArea chartArea chartArea SidebarArea'
-  'chartArea chartArea chartArea SidebarArea';
+  'navArea navArea  navArea'
+  'chartArea chartArea  SidebarArea'
+  'chartArea chartArea  SidebarArea'
+  'chartArea chartArea  SidebarArea'
+  'chartArea chartArea  SidebarArea'
+  'chartArea chartArea  SidebarArea'
+  'chartArea chartArea  SidebarArea'
+  'chartArea chartArea  SidebarArea'
+  'chartArea chartArea  SidebarArea'
+  'chartArea chartArea  SidebarArea'
+  'chartArea chartArea  SidebarArea'
+  'chartArea chartArea  SidebarArea'
+  'chartArea chartArea  SidebarArea'
+  'chartArea chartArea  SidebarArea'
+  'chartArea chartArea  SidebarArea'
+  'chartArea chartArea  SidebarArea'
+  'chartArea chartArea  SidebarArea'
+  'chartArea chartArea  SidebarArea';
 }
 
 ::-webkit-scrollbar {
