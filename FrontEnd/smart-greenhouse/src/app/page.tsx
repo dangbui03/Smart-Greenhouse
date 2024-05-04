@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import localFont from "next/font/local";
@@ -10,6 +9,7 @@ import { AuthContextType } from "@/app/context/authContext";
 import { useRouter, redirect } from "next/navigation";
 import { useState, useEffect } from "react";
 import { setCookie, getCookie } from "cookies-next";
+import { auth, db } from "../../firebase/firebaseConfig";
 
 const Brandford = localFont({ src: "../../public/font/Brandford.otf" });
 const VintageKing = localFont({ src: "../../public/font/VintageKing.ttf" });
@@ -78,14 +78,15 @@ export default function Home() {
                 action={async (formData) => {
                   const result = await SignAction(formData);
                   const u: User = {
-                    displayName: result.user.displayName,
-                    email: result.user.email,
-                    photoURL: result.user.photoURL,
-                    uid: result.user.uid,
+                    displayName: (auth.currentUser as User).displayName,
+                    email: (auth.currentUser as User).email,
+                    photoURL: (auth.currentUser as User).photoURL,
+                    uid: (auth.currentUser as User).uid,
                   };
                   setAuthContext(u);
                   setCookie("user", JSON.stringify(u));
                   router.push("/dashboard", { scroll: false });
+                  console.log(auth.currentUser);
                 }}
               >
                 <motion.button

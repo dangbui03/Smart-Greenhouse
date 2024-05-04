@@ -5,6 +5,7 @@ type User = {
     uid: string
 }
 type ControlState = {
+    priority?: string | undefined,
     water: string | undefined,
     led: string | undefined,
     fan: {
@@ -12,3 +13,25 @@ type ControlState = {
         velocity: number | undefined,
     }
 }
+
+type NumberState = {
+    temperature: number,
+    moisture: number,
+    soilmoisture: number,
+    light: number,
+}
+
+type StateRecord = {
+    id: string,
+    data: {
+        fan: any;
+        fanspeed: any;
+        led: any;
+        light: any;
+        mode: any;
+        moisture: any;
+        soilmoisture: any;
+        temperature: any;
+        water: any;
+    }
+};

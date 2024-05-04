@@ -1,34 +1,42 @@
 import React, { useState, useEffect } from "react";
 import GetLast from "../../../action/GetLast";
+import { getCookie, setCookie } from "cookies-next";
+import CreateRecord from "../../../action/CreateRecord";
 interface Props {
   feed: string;
 }
 
 export default function NumberState(props: Props) {
-  const [number, setNumber] = useState(0);
-  const n = GetLast(props.feed).then((result) => {
-    setNumber(Number(result.value));
-  });
+  let ns = JSON.parse(getCookie("ns") as string);
+
   useEffect(() => {
     const interval = setInterval(() => {
       const n = GetLast(props.feed).then((result) => {
-        setNumber(Number(result.value));
+        if (props.feed == "temperature") {
+          ns.temperature = result.value;
+        } else if (props.feed == "moisture") {
+          ns.moisture = result.value;
+        } else if (props.feed == "soilmoisture") {
+          ns.soilmoisture = result.value;
+        } else if (props.feed == "light") {
+          ns.light = result.value;
+        }
+        setCookie("ns", JSON.stringify(ns));
       });
-    }, 60000);
+    }, Number(process.env.NEXT_PUBLIC_REFRESH_RATE));
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <p className=" w-32 h-32 flex justify-center items-center text-6xl">
-      {number}
+    <p className=" w-32 h-32 flex justify-center items-center text-4xl">
       {props.feed == "temperature"
-        ? "°C"
+        ? `${ns.temperature}°C`
         : props.feed == "moisture"
-        ? "%"
+        ? `${ns.moisture}%`
         : props.feed == "light"
-        ? "lx"
-        : "%"}
+        ? `${ns.light}lx`
+        : `${ns.soilmoisture}%`}
     </p>
   );
 }

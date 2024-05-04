@@ -6,13 +6,19 @@ import { useRouter } from "next/navigation";
 import useAuth from "@/app/hook/useAuth";
 import { AuthContextType } from "@/app/context/authContext";
 import toast from "react-hot-toast";
+import { auth } from "../../../firebase/firebaseConfig";
+import { signOut } from "firebase/auth";
 
 export default function SignOutButton() {
   const { authContext, setAuthContext } = useAuth() as AuthContextType;
   const router = useRouter();
-  const signOut = () => {
+  const SignOut = () => {
     deleteCookie("user");
     setAuthContext(undefined);
+    signOut(auth)
+      .then(() => {})
+      .catch((error) => {});
+
     router.push("/", { scroll: false });
   };
   return (
@@ -26,7 +32,7 @@ export default function SignOutButton() {
                 className=" bg-red-600 rounded-xl p-2"
                 onClick={() => {
                   toast.remove();
-                  signOut();
+                  SignOut();
                 }}
               >
                 Yes
@@ -38,7 +44,8 @@ export default function SignOutButton() {
                 No
               </button>
             </div>
-          </div>
+          </div>,
+          { id: "signout" }
         )
       }
     >

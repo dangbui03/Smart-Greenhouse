@@ -8,7 +8,10 @@ import { ControlStateContextType } from "../context/controlStateContext";
 import { motion, AnimatePresence, delay } from "framer-motion";
 import Create from "../../../action/Create";
 import NumberState from "./NumberState";
-
+import Dictaphone from "./Voice";
+import toast from "react-hot-toast";
+import { setCookie, getCookie } from "cookies-next";
+import { useEffect } from "react";
 const SidebarVars = {
   initital: {
     transition: {
@@ -50,11 +53,15 @@ const SectionVars = {
   },
 };
 
+const c = JSON.parse(getCookie("cs") as string);
+
 export default function Sidebar() {
   const { controlContext, setcontrolContext } =
     useControl() as ControlContextType;
   const { controlStateContext, setcontrolStateContext } =
     useControlState() as ControlStateContextType;
+
+  if (!controlStateContext) setcontrolStateContext(c);
   return (
     <>
       <AnimatePresence>
@@ -132,7 +139,8 @@ export default function Sidebar() {
           >
             <motion.form
               className={
-                (controlStateContext?.fan.state == "1"
+                (controlStateContext?.fan.state == "1" ||
+                controlStateContext?.fan.state == "2"
                   ? "bg-green-500"
                   : "bg-white") +
                 " rounded-xl flex justify-center items-center relative"
@@ -147,11 +155,22 @@ export default function Sidebar() {
               />
               <div className=" bg-black w-full h-10 absolute top-3 right-0 text-white">
                 <p className=" absolute w-full text-center">
-                  {controlStateContext?.fan.velocity}%
+                  {controlStateContext?.fan.state == "1" ||
+                  controlStateContext?.fan.state == "2"
+                    ? controlStateContext?.fan.velocity
+                    : 0}
+                  %
                 </p>
                 <div
                   className=" bg-green-400 h-10 self-end text-center"
-                  style={{ width: `${controlStateContext?.fan.velocity}%` }}
+                  style={{
+                    width: `${
+                      controlStateContext?.fan.state == "1" ||
+                      controlStateContext?.fan.state == "2"
+                        ? controlStateContext?.fan.velocity
+                        : 0
+                    }%`,
+                  }}
                 ></div>
               </div>
               <section className=" absolute bottom-2">
@@ -162,18 +181,26 @@ export default function Sidebar() {
                       led: controlStateContext?.led,
                       fan: {
                         state:
-                          controlStateContext?.fan.state == "1" ? "0" : "1",
+                          controlStateContext?.fan.state == "1" ||
+                          controlStateContext?.fan.state == "2"
+                            ? "3"
+                            : "2",
                         velocity:
-                          controlStateContext?.fan.state == "1" ? 0 : 50,
+                          controlStateContext?.fan.state == "1" ||
+                          controlStateContext?.fan.state == "2"
+                            ? 0
+                            : 50,
                       },
                     };
                     setcontrolStateContext(cc);
+                    setCookie("cs", JSON.stringify(cc));
                     Create("fan", cc.fan.state);
                   }}
                 >
                   <Image
                     src={
-                      controlStateContext?.fan.state == "1"
+                      controlStateContext?.fan.state == "1" ||
+                      controlStateContext?.fan.state == "2"
                         ? "/icon/on-rounded-svgrepo-com.svg"
                         : "/icon/off-rounded-svgrepo-com.svg"
                     }
@@ -184,20 +211,34 @@ export default function Sidebar() {
                 </button>
                 <button
                   formAction={(formData: FormData) => {
-                    const cc: ControlState = {
-                      water: controlStateContext?.water,
-                      led: controlStateContext?.led,
-                      fan: {
-                        state: controlStateContext?.fan.state,
-                        velocity:
-                          (controlStateContext?.fan.velocity as number) >= 100
-                            ? 100
-                            : (controlStateContext?.fan.velocity as number) +
-                              10,
-                      },
-                    };
-                    setcontrolStateContext(cc);
-                    Create("fanspeed", cc.fan.velocity);
+                    if (
+                      controlStateContext?.fan.state == "0" ||
+                      controlStateContext?.fan.state == "3"
+                    ) {
+                      toast.error("Please turn on the fan first", {
+                        style: {
+                          backgroundColor: "white",
+                          color: "black",
+                        },
+                      });
+                    } else {
+                      const cc: ControlState = {
+                        water: controlStateContext?.water,
+                        led: controlStateContext?.led,
+                        fan: {
+                          state: controlStateContext?.fan.state,
+                          velocity:
+                            (controlStateContext?.fan.velocity as number) >= 100
+                              ? 100
+                              : (controlStateContext?.fan.velocity as number) +
+                                10,
+                        },
+                      };
+
+                      setcontrolStateContext(cc);
+                      setCookie("cs", JSON.stringify(cc));
+                      Create("fanspeed", cc.fan.velocity);
+                    }
                   }}
                 >
                   <Image
@@ -209,21 +250,35 @@ export default function Sidebar() {
                 </button>
                 <button
                   formAction={(formData: FormData) => {
-                    const cc: ControlState = {
-                      water: controlStateContext?.water,
-                      led: controlStateContext?.led,
-                      fan: {
-                        state: controlStateContext?.fan.state,
-                        velocity:
-                          (controlStateContext?.fan.velocity as number) - 10 <=
-                          10
-                            ? 10
-                            : (controlStateContext?.fan.velocity as number) -
-                              10,
-                      },
-                    };
-                    setcontrolStateContext(cc);
-                    Create("fanspeed", cc.fan.velocity);
+                    if (
+                      controlStateContext?.fan.state == "0" ||
+                      controlStateContext?.fan.state == "3"
+                    ) {
+                      toast.error("Please turn on the fan first", {
+                        style: {
+                          backgroundColor: "white",
+                          color: "black",
+                        },
+                      });
+                    } else {
+                      const cc: ControlState = {
+                        water: controlStateContext?.water,
+                        led: controlStateContext?.led,
+                        fan: {
+                          state: controlStateContext?.fan.state,
+                          velocity:
+                            (controlStateContext?.fan.velocity as number) -
+                              10 <=
+                            10
+                              ? 10
+                              : (controlStateContext?.fan.velocity as number) -
+                                10,
+                        },
+                      };
+                      setcontrolStateContext(cc);
+                      setCookie("cs", JSON.stringify(cc));
+                      Create("fanspeed", cc.fan.velocity);
+                    }
                   }}
                 >
                   <Image
@@ -237,8 +292,9 @@ export default function Sidebar() {
             </motion.form>
             <motion.form
               className={
-                (controlStateContext?.water == "1"
-                  ? "bg-green-500"
+                (controlStateContext?.water == "1" ||
+                controlStateContext?.water == "2"
+                  ? "bg-blue-200"
                   : "bg-white") +
                 " rounded-xl flex flex-col gap-10 justify-center items-center relative"
               }
@@ -254,7 +310,11 @@ export default function Sidebar() {
                 className=" absolute bottom-2"
                 formAction={(formData: FormData) => {
                   const cc: ControlState = {
-                    water: controlStateContext?.water == "1" ? "0" : "1",
+                    water:
+                      controlStateContext?.water == "1" ||
+                      controlStateContext?.water == "2"
+                        ? "3"
+                        : "2",
                     led: controlStateContext?.led,
                     fan: {
                       state: controlStateContext?.fan.state,
@@ -262,12 +322,14 @@ export default function Sidebar() {
                     },
                   };
                   setcontrolStateContext(cc);
+                  setCookie("cs", JSON.stringify(cc));
                   Create("water", cc.water);
                 }}
               >
                 <Image
                   src={
-                    controlStateContext?.water == "1"
+                    controlStateContext?.water == "1" ||
+                    controlStateContext?.water == "2"
                       ? "/icon/on-rounded-svgrepo-com.svg"
                       : "/icon/off-rounded-svgrepo-com.svg"
                   }
@@ -279,8 +341,9 @@ export default function Sidebar() {
             </motion.form>
             <motion.form
               className={
-                (controlStateContext?.led == "1"
-                  ? "bg-green-500"
+                (controlStateContext?.led == "1" ||
+                controlStateContext?.led == "2"
+                  ? "bg-yellow-400"
                   : "bg-white") +
                 " rounded-xl flex flex-col gap-10 justify-center items-center relative"
               }
@@ -297,19 +360,25 @@ export default function Sidebar() {
                 formAction={(formData: FormData) => {
                   const cc: ControlState = {
                     water: controlStateContext?.water,
-                    led: controlStateContext?.led == "1" ? "0" : "1",
+                    led:
+                      controlStateContext?.led == "1" ||
+                      controlStateContext?.led == "2"
+                        ? "3"
+                        : "2",
                     fan: {
                       state: controlStateContext?.fan.state,
                       velocity: controlStateContext?.fan.velocity,
                     },
                   };
                   setcontrolStateContext(cc);
+                  setCookie("cs", JSON.stringify(cc));
                   Create("led", cc.led);
                 }}
               >
                 <Image
                   src={
-                    controlStateContext?.led == "1"
+                    controlStateContext?.led == "1" ||
+                    controlStateContext?.led == "2"
                       ? "/icon/on-rounded-svgrepo-com.svg"
                       : "/icon/off-rounded-svgrepo-com.svg"
                   }
@@ -319,17 +388,7 @@ export default function Sidebar() {
                 />
               </button>
             </motion.form>
-            <motion.button
-              className="bg-red-300 rounded-xl flex justify-center items-center"
-              variants={SectionVars}
-            >
-              <Image
-                src="/icon/voice-tools-svgrepo-com.svg"
-                alt="fan"
-                width={90}
-                height={90}
-              />
-            </motion.button>
+            <Dictaphone />
           </motion.aside>
         )}
       </AnimatePresence>

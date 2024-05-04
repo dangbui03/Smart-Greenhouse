@@ -7,16 +7,16 @@ import removeData from "./removeData";
 import GetLast from "../../../action/GetLast";
 import GetFeed from "../../../action/GetFeed";
 
-function TemperatureChart() {
+function SoilMoistureChart() {
   const chartRef = useRef();
 
-  const [temperatureData, setTemperatureData] = useState({
+  const [soilMoistureData, setSoilMoistureData] = useState({
     labels: [],
     datasets: [
       {
-        label: "Temperature",
+        label: "Soil moisture",
         data: [],
-        backgroundColor: ["rgb(252,165,165,1)"],
+        backgroundColor: ["rgb(133,77,14,1)"],
         borderColor: "black",
         borderWidth: 2,
       },
@@ -24,16 +24,16 @@ function TemperatureChart() {
   });
 
   useEffect(() => {
-    const n = GetFeed("temperature").then((result) => {
-      setTemperatureData({
+    const n = GetFeed("soilmoisture").then((result) => {
+      setSoilMoistureData({
         labels: (result.map((data) =>
           new Date(data.created_at).toLocaleTimeString()
         )).reverse(),
         datasets: [
           {
-            label: "Temperature",
+            label: "Soil moisture",
             data: (result.map((data) => data.value)).reverse(),
-            backgroundColor: ["rgb(252,165,165,1)"],
+            backgroundColor: ["rgb(133,77,14,1)"],
             borderColor: "black",
             borderWidth: 2,
           },
@@ -42,7 +42,7 @@ function TemperatureChart() {
     });
 
     const interval = setInterval(() => {
-      const n = GetLast("temperature").then((result) => {
+      const n = GetLast("soilmoisture").then((result) => {
         addData(
           chartRef.current,
           new Date(result.created_at).toLocaleTimeString(),
@@ -61,7 +61,7 @@ function TemperatureChart() {
         width: "40rem",
       }}
     >
-      <Line data={temperatureData} ref={chartRef} options={{
+      <Line data={soilMoistureData} ref={chartRef} options={{
                 plugins: {
                   legend: {
                       labels: {
@@ -76,4 +76,4 @@ function TemperatureChart() {
   );
 }
 
-export default TemperatureChart;
+export default SoilMoistureChart;
