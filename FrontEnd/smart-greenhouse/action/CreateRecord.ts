@@ -18,6 +18,7 @@ export default async function CreateRecord(state: ControlState, priority: Boolea
                     temperature: Number(number.temperature),
                     water: state.water == "1" || state.water == "2" ? true : false,
                     fan: state.fan.state == "1" || state.fan.state == "2" ? true : false,
+                    createdDate: date
                 });
             }
         }

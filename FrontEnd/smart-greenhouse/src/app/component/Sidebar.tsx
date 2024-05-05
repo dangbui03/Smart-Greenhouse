@@ -11,7 +11,7 @@ import NumberState from "./NumberState";
 import Dictaphone from "./Voice";
 import toast from "react-hot-toast";
 import { setCookie, getCookie } from "cookies-next";
-import { useEffect } from "react";
+import ControlButton from "./ControlButton";
 const SidebarVars = {
   initital: {
     transition: {
@@ -53,7 +53,22 @@ const SectionVars = {
   },
 };
 
-const c = JSON.parse(getCookie("cs") as string);
+let c: ControlState = getCookie("cs")
+  ? JSON.parse(getCookie("cs") as string)
+  : {
+      water: "0",
+      led: "0",
+      fan: {
+        state: "0",
+        velocity: 0,
+      },
+    };
+
+let p = getCookie("priority")
+  ? getCookie("priority") == "true"
+    ? true
+    : false
+  : false;
 
 export default function Sidebar() {
   const { controlContext, setcontrolContext } =
@@ -62,6 +77,7 @@ export default function Sidebar() {
     useControlState() as ControlStateContextType;
 
   if (!controlStateContext) setcontrolStateContext(c);
+  if (!controlContext) setcontrolContext(p as boolean);
   return (
     <>
       <AnimatePresence>
@@ -153,8 +169,8 @@ export default function Sidebar() {
                 width={128}
                 height={90}
               />
-              <div className=" bg-black w-full h-10 absolute top-3 right-0 text-white">
-                <p className=" absolute w-full text-center">
+              <div className=" bg-black md:w-full md:h-10 absolute md:top-3 md:right-0 right-1 h-1 top-1 md:rounded-none rounded-full">
+                <p className=" absolute md:w-full md:text-center md:text-white w-fit text-black right-1 font-mono">
                   {controlStateContext?.fan.state == "1" ||
                   controlStateContext?.fan.state == "2"
                     ? controlStateContext?.fan.velocity
@@ -162,7 +178,7 @@ export default function Sidebar() {
                   %
                 </p>
                 <div
-                  className=" bg-green-400 h-10 self-end text-center"
+                  className=" bg-green-400 md:h-10 self-end text-center h-1"
                   style={{
                     width: `${
                       controlStateContext?.fan.state == "1" ||
@@ -173,8 +189,9 @@ export default function Sidebar() {
                   }}
                 ></div>
               </div>
-              <section className=" absolute bottom-2">
+              <section className=" absolute bottom-0 w-full h-full md:w-40 md:h-40 md:bottom-2 md:flex justify-center items-end">
                 <button
+                  className=" absolute w-full h-full md:w-fit md:h-fit md:block"
                   formAction={(formData: FormData) => {
                     const cc: ControlState = {
                       water: controlStateContext?.water,
@@ -198,6 +215,7 @@ export default function Sidebar() {
                   }}
                 >
                   <Image
+                    className="md:block hidden"
                     src={
                       controlStateContext?.fan.state == "1" ||
                       controlStateContext?.fan.state == "2"
@@ -210,6 +228,7 @@ export default function Sidebar() {
                   />
                 </button>
                 <button
+                  className="md:block absolute right-0 bottom-0 translate-x-4 translate-y-5 md:translate-x-0 md:translate-y-0"
                   formAction={(formData: FormData) => {
                     if (
                       controlStateContext?.fan.state == "0" ||
@@ -242,13 +261,22 @@ export default function Sidebar() {
                   }}
                 >
                   <Image
+                    className="md:block hidden"
                     src="/icon/increase-circle-svgrepo-com.svg"
                     alt="increase"
                     width={50}
                     height={90}
                   />
+                  <Image
+                    className="md:hidden block"
+                    src="/icon/increase-circle-svgrepo-com.svg"
+                    alt="increase"
+                    width={40}
+                    height={25}
+                  />
                 </button>
                 <button
+                  className="md:block absolute left-0 bottom-0 -translate-x-4 translate-y-5 md:translate-x-0 md:translate-y-0"
                   formAction={(formData: FormData) => {
                     if (
                       controlStateContext?.fan.state == "0" ||
@@ -282,10 +310,18 @@ export default function Sidebar() {
                   }}
                 >
                   <Image
+                    className="md:block hidden"
                     src="/icon/decrease-circle-svgrepo-com.svg"
-                    alt="decrease"
+                    alt="increase"
                     width={50}
                     height={90}
+                  />
+                  <Image
+                    className="md:hidden block"
+                    src="/icon/decrease-circle-svgrepo-com.svg"
+                    alt="increase"
+                    width={40}
+                    height={25}
                   />
                 </button>
               </section>
@@ -307,7 +343,7 @@ export default function Sidebar() {
                 height={90}
               />
               <button
-                className=" absolute bottom-2"
+                className=" absolute md:bottom-2 bottom-0 w-full h-full md:w-fit md:h-fit"
                 formAction={(formData: FormData) => {
                   const cc: ControlState = {
                     water:
@@ -327,6 +363,7 @@ export default function Sidebar() {
                 }}
               >
                 <Image
+                  className=" hidden md:block"
                   src={
                     controlStateContext?.water == "1" ||
                     controlStateContext?.water == "2"
@@ -356,7 +393,7 @@ export default function Sidebar() {
                 height={90}
               />
               <button
-                className=" absolute bottom-2"
+                className=" absolute md:bottom-2 bottom-0 w-full h-full md:w-fit md:h-fit"
                 formAction={(formData: FormData) => {
                   const cc: ControlState = {
                     water: controlStateContext?.water,
@@ -376,6 +413,7 @@ export default function Sidebar() {
                 }}
               >
                 <Image
+                  className=" hidden md:block"
                   src={
                     controlStateContext?.led == "1" ||
                     controlStateContext?.led == "2"

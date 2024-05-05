@@ -8,6 +8,7 @@ import { AuthContextType } from "@/app/context/authContext";
 import toast from "react-hot-toast";
 import { auth } from "../../../firebase/firebaseConfig";
 import { signOut } from "firebase/auth";
+import { motion } from "framer-motion";
 
 export default function SignOutButton() {
   const { authContext, setAuthContext } = useAuth() as AuthContextType;
@@ -22,7 +23,9 @@ export default function SignOutButton() {
     router.push("/", { scroll: false });
   };
   return (
-    <button
+    <motion.button
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 1.1 }}
       onClick={() =>
         toast(
           <div className="flex flex-col items-center gap-5">
@@ -55,6 +58,6 @@ export default function SignOutButton() {
         width={40}
         height={40}
       />
-    </button>
+    </motion.button>
   );
 }

@@ -196,13 +196,15 @@ const Dictaphone = () => {
     variants={SectionVars}
   >
     <Image
+
       src="/icon/voice-tools-svgrepo-com.svg"
       alt="fan"
       width={90}
       height={90}
     />
-      <button onClick={ listening ? SpeechRecognition.stopListening : SpeechRecognition.startListening} className="absolute bottom-2">
+      <button onClick={ listening ? SpeechRecognition.stopListening : SpeechRecognition.startListening} className=" absolute md:bottom-2 bottom-0 w-full h-full md:w-fit md:h-fit">
       <Image
+      className=" hidden md:block"
                   src={
                     listening
                       ? "/icon/on-rounded-svgrepo-com.svg"

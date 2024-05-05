@@ -55,16 +55,20 @@ export default function Home() {
             initial="initial"
             animate="animate"
             exit="exit"
-            className="flex items-center flex-col absolute left-0 h-screen w-96"
+            className="flex items-center flex-col absolute left-0 h-screen w-full p-2 md:w-96 md:p-0"
             style={{ backgroundColor: "#398254" }}
           >
             <Image src="/logo.png" alt="sign out" width={500} height={500} />
             <section className="flex justify-center items-center flex-col">
-              <div className={" text-7xl text-green-50 " + Brandford.className}>
+              <div
+                className={
+                  " text-6xl md:text-7xl text-green-50 " + Brandford.className
+                }
+              >
                 SMART
               </div>
               <div
-                className={" text-8xl " + VintageKing.className}
+                className={" text-7xl md:text-8xl " + VintageKing.className}
                 style={{
                   color: "#A8E065",
                 }}
@@ -93,14 +97,16 @@ export default function Home() {
                   onClick={() => {
                     setClicked(true);
                   }}
-                  whileHover={{ rotate: -90 }}
+                  whileHover={{ scale: 1.1 }}
+                  className="flex justify-center items-center bg-green-900 p-3 rounded-lg font-mono gap-5 text-nowrap"
                 >
                   <Image
-                    src="/icon/sign-in-svgrepo-com-green.svg"
+                    src="/icon/google-color-svgrepo-com.svg"
                     alt="sign out"
                     width={100}
                     height={100}
                   />
+                  Sign in wigh Google
                 </motion.button>
               </motion.form>
             </section>

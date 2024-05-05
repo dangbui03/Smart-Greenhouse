@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 export default function BackButton() {
   return (
-    <section className=" h-full w-20 bg-transparent flex-grow-0 flex justify-center items-center">
+    <section className=" h-full w-20 bg-transparent flex-grow-0 md:flex justify-center items-center hidden">
       <motion.button whileHover={{ scale: 1.3 }}>
         <Link href="/dashboard">
           <Image

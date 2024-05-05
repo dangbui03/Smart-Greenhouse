@@ -56,12 +56,56 @@ function LightChart() {
   }, []);
 
   return (
+    <>
     <div
+    className="flex md:hidden mt-5 m-2"
       style={{
-        width: "40rem",
+        width: "18rem",
+        height: "20rem",
       }}
     >
-      <Line data={lightData} ref={chartRef} options={{
+      <Line data={lightData} ref={chartRef} 
+
+      options={{
+        responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero:true
+            }
+        }]
+    },
+                plugins: {
+                  legend: {
+                      labels: {
+                          font: {
+                              size: 10
+                          }
+                      }
+                  }
+              }
+      }}/>
+    </div>
+    <div
+    className="hidden md:flex"
+      style={{
+        width: "40rem",
+        height: "30rem",
+      }}
+    >
+      <Line data={lightData} ref={chartRef} 
+
+      options={{
+        responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero:true
+            }
+        }]
+    },
                 plugins: {
                   legend: {
                       labels: {
@@ -73,6 +117,7 @@ function LightChart() {
               }
       }}/>
     </div>
+    </>
   );
 }
 

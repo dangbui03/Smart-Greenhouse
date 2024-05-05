@@ -7,7 +7,14 @@ interface Props {
 }
 
 export default function NumberState(props: Props) {
-  let ns = JSON.parse(getCookie("ns") as string);
+  let ns: NumberState = getCookie("ns")
+    ? JSON.parse(getCookie("ns") as string)
+    : {
+        temperature: 0,
+        moisture: 0,
+        soilmoisture: 0,
+        light: 0,
+      };
 
   useEffect(() => {
     const interval = setInterval(() => {

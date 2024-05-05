@@ -4,10 +4,10 @@ import Image from "next/image";
 import useControl from "../hook/useControl";
 import { ControlContextType } from "../context/controlContext";
 import Create from "../../../action/Create";
-import GetLast from "../../../action/GetLast";
 import toast from "react-hot-toast";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
+import { setCookie } from "cookies-next";
+import { motion } from "framer-motion";
 
 export default function ControlButton() {
   const { controlContext, setcontrolContext } =
@@ -33,6 +33,7 @@ export default function ControlButton() {
                           toast.remove();
                           Create("priority", 1);
                           setcontrolContext(!controlContext);
+                          setCookie("priority", !controlContext);
                         }}
                       >
                         Yes
@@ -56,6 +57,7 @@ export default function ControlButton() {
                           toast.remove();
                           Create("priority", 0);
                           setcontrolContext(!controlContext);
+                          setCookie("priority", !controlContext);
                         }}
                       >
                         Yes
@@ -74,25 +76,31 @@ export default function ControlButton() {
             );
           }}
         >
-          <button>
+          <motion.button
+            className="md:hidden flex"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 1.1 }}
+          >
+            <Image
+              src="/icon/control-multimedia-player-svgrepo-com.svg"
+              alt="control"
+              width={25}
+              height={25}
+            />
+          </motion.button>
+          <motion.button
+            className="md:flex hidden"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 1.1 }}
+          >
             <Image
               src="/icon/control-multimedia-player-svgrepo-com.svg"
               alt="control"
               width={35}
               height={35}
             />
-          </button>
+          </motion.button>
         </form>
-      )}
-      {pathname != "/dashboard" && (
-        <Link href="/dashboard">
-          <Image
-            src="/icon/control-multimedia-player-svgrepo-com.svg"
-            alt="control"
-            width={35}
-            height={35}
-          />
-        </Link>
       )}
     </>
   );

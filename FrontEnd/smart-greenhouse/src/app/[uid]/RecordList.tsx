@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import RecordView from "./RecordView";
+import BackButton from "./BackButton";
 
 interface Props {
   records: any;
@@ -19,8 +20,8 @@ const UlVars = {
   },
   animate: {
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.7,
+      staggerChildren: 0.03,
+      delayChildren: 0.1,
       staggerDirection: 1,
     },
   },
@@ -65,35 +66,41 @@ export default function RecordList({ records }: Props) {
   console.log(mapped);
 
   return (
-    <motion.ul
-      variants={UlVars}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      className="h-full w-full flex-grow bg-white flex flex-wrap gap-10 overflow-scroll justify-center"
-    >
-      {mapped.map((doc, index) => (
-        <motion.li variants={LiVars} key={index} className="items-center w-52">
-          <button
-            className="flex justify-center items-center flex-col"
-            onClick={() => {
-              setClicked(true);
-              setIndexC(index);
-            }}
+    <>
+      <motion.ul
+        variants={UlVars}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        className="h-full w-full flex-grow bg-white flex flex-wrap gap-10 overflow-scroll justify-center"
+      >
+        {mapped.map((doc, index) => (
+          <motion.li
+            variants={LiVars}
+            key={index}
+            className="flex justify-center items-center w-52"
           >
-            {doc.id}
-            <Image
-              src="/icon/record-svgrepo-com.svg"
-              alt="record"
-              width={100}
-              height={50}
-            />
-          </button>
-          {clicked && index == indexC && (
-            <RecordView record={doc} setClicked={setClicked} />
-          )}
-        </motion.li>
-      ))}
-    </motion.ul>
+            <button
+              className="flex justify-center items-center flex-col"
+              onClick={() => {
+                setClicked(true);
+                setIndexC(index);
+              }}
+            >
+              {doc.id}
+              <Image
+                src="/icon/record-svgrepo-com.svg"
+                alt="record"
+                width={100}
+                height={50}
+              />
+            </button>
+            {clicked && index == indexC && (
+              <RecordView record={doc} setClicked={setClicked} />
+            )}
+          </motion.li>
+        ))}
+      </motion.ul>
+    </>
   );
 }

@@ -26,7 +26,11 @@ export default function RootLayout({
         <ControlContextProvider>
           <ControlStateContextProvider>
             <html lang="en">
-              <body className={inter.className + " overflow-hidden"}>
+              <body
+                className={
+                  inter.className + " overflow-scroll md:overflow-hidden"
+                }
+              >
                 {children}
               </body>
             </html>

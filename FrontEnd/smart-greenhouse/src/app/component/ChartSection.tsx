@@ -6,6 +6,9 @@ import SoilMoistureChart from "../chart/SoilMoistureChart";
 import LightChart from "../chart/LightChart";
 import { useState } from "react";
 import Image from "next/image";
+import ControlButton from "./ControlButton";
+import SignOutButton from "./SignOutButton";
+import RecordButton from "./RecordButton";
 const ChartVars = {
   initial: {
     x: -20,
@@ -38,34 +41,71 @@ export default function ChartSection() {
   return (
     <motion.section
       id="canvas"
-      className="chartArea bg-slate-100 ml-10 rounded-xl mb-10 flex justify-center items-center gap-5"
+      className="chartArea bg-slate-100 md:ml-10 rounded-xl mb-10 md:flex md:justify-center md:items-center md:gap-5 my-2"
       variants={ChartVars}
       initial="initial"
       animate="animate"
       exit="exit"
     >
-      <button onClick={() => moveLeft()}>
+      <motion.button
+        onClick={() => moveLeft()}
+        className="md:flex hidden"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 1.1 }}
+      >
         <Image
           src="/icon/left-chevron-svgrepo-com.svg"
           alt="move left"
           width={50}
           height={50}
         />
-      </button>
+      </motion.button>
       {chart == 0 && <TemperatureChart />}
       {chart == 1 && <MoistureChart />}
       {chart == 2 && <SoilMoistureChart />}
       {chart == 3 && <LightChart />}
-      <section>
-        <button onClick={() => moveRight()}>
+      <section className="flex justify-evenly md:hidden items-center">
+        <motion.button
+          onClick={() => moveLeft()}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 1.1 }}
+        >
+          <Image
+            src="/icon/left-chevron-svgrepo-com.svg"
+            alt="move left"
+            width={50}
+            height={50}
+          />
+        </motion.button>
+        <ControlButton />
+        <RecordButton />
+        <SignOutButton />
+        <motion.button
+          onClick={() => moveRight()}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 1.1 }}
+        >
           <Image
             src="/icon/right-chevron-svgrepo-com.svg"
             alt="move right"
             width={50}
             height={50}
           />
-        </button>
+        </motion.button>
       </section>
+      <motion.button
+        onClick={() => moveRight()}
+        className="md:flex hidden"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 1.1 }}
+      >
+        <Image
+          src="/icon/right-chevron-svgrepo-com.svg"
+          alt="move right"
+          width={50}
+          height={50}
+        />
+      </motion.button>
     </motion.section>
   );
 }
