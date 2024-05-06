@@ -63,7 +63,6 @@ export default function RecordList({ records }: Props) {
       data: record._document.data.value.mapValue.fields,
     });
   });
-  console.log(mapped);
 
   return (
     <>

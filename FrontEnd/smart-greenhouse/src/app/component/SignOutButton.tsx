@@ -15,6 +15,9 @@ export default function SignOutButton() {
   const router = useRouter();
   const SignOut = () => {
     deleteCookie("user");
+    deleteCookie("ns");
+    deleteCookie("cs");
+    deleteCookie("priority");
     setAuthContext(undefined);
     signOut(auth)
       .then(() => {})

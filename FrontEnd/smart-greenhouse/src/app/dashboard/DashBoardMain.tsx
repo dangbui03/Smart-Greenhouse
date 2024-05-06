@@ -16,135 +16,156 @@ import { setCookie } from "cookies-next";
 import CreateRecord from "../../../action/CreateRecord";
 import dynamic from "next/dynamic";
 
+const initialState = {
+  controlState: {
+    water: "0",
+    led: "0",
+    fan: {
+      state: "0",
+      velocity: 0,
+    },
+  },
+  numberState: {
+    temperature: 0,
+    moisture: 0,
+    soilmoisture: 0,
+    light: 0,
+  },
+  user: {
+    displayName: "",
+    email: "",
+    photoURL: "",
+    uid: "",
+  },
+  priority: false,
+};
+
 export default function DashBoardMain() {
   useEffect(() => {
-    let cs: ControlState = {
-      water: "0",
-      led: "0",
-      fan: { state: "0", velocity: 0 },
-    };
-    const water = GetLast("water").then((result) => {
-      cs.water = result.value;
-    });
-    const led = GetLast("led").then((result) => {
-      cs.led = result.value;
-    });
-    const fan = GetLast("fan").then((result) => {
-      cs.fan.state = result.value;
-    });
-    let c: ControlState = {
-      water: "0",
-      led: "0",
-      fan: {
-        state: "0",
-        velocity: 0,
-      },
-    };
-    const fanspeed = GetLast("fanspeed").then((result) => {
-      cs.fan.velocity = Number(result.value);
-      setCookie("cs", JSON.stringify(cs));
-      c = JSON.parse(getCookie("cs") as string);
-    });
-    let ns: NumberState = {
-      temperature: 0,
-      moisture: 0,
-      soilmoisture: 0,
-      light: 0,
-    };
-    const temperature = GetLast("temperature").then((result) => {
-      ns.temperature = Number(result.value);
-    });
-    const moisture = GetLast("moisture").then((result) => {
-      ns.moisture = Number(result.value);
-    });
-    const soilmoisture = GetLast("soilmoisture").then((result) => {
-      ns.soilmoisture = Number(result.value);
-    });
+    // Get initial user state from cookies
+    const user = getCookie("user")
+      ? JSON.parse(getCookie("user") as string)
+      : initialState.user;
 
-    let n: NumberState = {
-      temperature: 0,
-      moisture: 0,
-      soilmoisture: 0,
-      light: 0,
-    };
-    const light = GetLast("light").then((result) => {
-      ns.light = Number(result.value);
-      setCookie("ns", JSON.stringify(ns));
-      n = JSON.parse(getCookie("ns") as string);
+    // Define all required data fetch promises
+    const fetchPromises = [
+      GetLast("water"),
+      GetLast("led"),
+      GetLast("fan"),
+      GetLast("fanspeed"),
+      GetLast("temperature"),
+      GetLast("moisture"),
+      GetLast("soilmoisture"),
+      GetLast("light"),
+      GetLast("priority"),
+    ];
+
+    Promise.all(fetchPromises).then((results) => {
+      const [
+        water,
+        led,
+        fan,
+        fanspeed,
+        temperature,
+        moisture,
+        soilmoisture,
+        light,
+        priority,
+      ] = results;
+
+      // Update control states
+      const controlState = {
+        water: water.value,
+        led: led.value,
+        fan: {
+          state: fan.value,
+          velocity: Number(fanspeed.value),
+        },
+      };
+      setCookie("cs", JSON.stringify(controlState));
+
+      // Update number states
+      const numberState = {
+        temperature: Number(temperature.value),
+        moisture: Number(moisture.value),
+        soilmoisture: Number(soilmoisture.value),
+        light: Number(light.value),
+      };
+      setCookie("ns", JSON.stringify(numberState));
+
+      // Update priority
+      const priorityState = priority.value === "1";
+      setCookie("priority", priorityState);
+
+      // Create record
+      CreateRecord(controlState, priorityState, numberState, user.uid);
     });
-    let p = false;
-    const priority = GetLast("priority").then((result) => {
-      setCookie("priority", result.value == "1" ? true : false);
-      p = Boolean(getCookie("priority"));
-    });
-    let u: User = {
-      displayName: "",
-      email: "",
-      photoURL: "",
-      uid: "",
-    };
-    if (getCookie("user")) {
-      u = JSON.parse(getCookie("user") as string);
-    }
-    CreateRecord(c, p, n, u.uid);
   }, []);
 
   useEffect(() => {
-    setInterval(() => {
-      let cs: ControlState = {
-        water: "0",
-        led: "0",
-        fan: { state: "0", velocity: 0 },
-      };
-      const water = GetLast("water").then((result) => {
-        cs.water = result.value;
-      });
-      const led = GetLast("led").then((result) => {
-        cs.led = result.value;
-      });
-      const fan = GetLast("fan").then((result) => {
-        cs.fan.state = result.value;
-      });
-      const fanspeed = GetLast("fanspeed").then((result) => {
-        cs.fan.velocity = Number(result.value);
-        setCookie("cs", JSON.stringify(cs));
-      });
-      let ns: NumberState = {
-        temperature: 0,
-        moisture: 0,
-        soilmoisture: 0,
-        light: 0,
-      };
-      const temperature = GetLast("temperature").then((result) => {
-        ns.temperature = Number(result.value);
-      });
-      const moisture = GetLast("moisture").then((result) => {
-        ns.moisture = Number(result.value);
-      });
-      const soilmoisture = GetLast("soilmoisture").then((result) => {
-        ns.soilmoisture = Number(result.value);
-      });
-      const light = GetLast("light").then((result) => {
-        ns.light = Number(result.value);
-        setCookie("ns", JSON.stringify(ns));
-      });
-      const priority = GetLast("priority").then((result) => {
-        setCookie("priority", result.value == "1" ? true : false);
-      });
-      const n = JSON.parse(getCookie("ns") as string);
-      const c = JSON.parse(getCookie("cs") as string);
-      let u: User = {
-        displayName: "",
-        email: "",
-        photoURL: "",
-        uid: "",
-      };
-      if (getCookie("user")) {
-        u = JSON.parse(getCookie("user") as string);
-      }
-      const p = Boolean(getCookie("priority"));
-      CreateRecord(c, p, n, u.uid);
-    }, Number(process.env.NEXT_PUBLIC_REFRESH_RATE));
+    const refreshRate = Number(process.env.NEXT_PUBLIC_REFRESH_RATE) || 60000; // Default to 5000ms if not defined
+
+    const intervalId = setInterval(() => {
+      Promise.all([
+        GetLast("water"),
+        GetLast("led"),
+        GetLast("fan"),
+        GetLast("fanspeed"),
+        GetLast("temperature"),
+        GetLast("moisture"),
+        GetLast("soilmoisture"),
+        GetLast("light"),
+        GetLast("priority"),
+      ])
+        .then((results) => {
+          const [
+            water,
+            led,
+            fan,
+            fanspeed,
+            temperature,
+            moisture,
+            soilmoisture,
+            light,
+            priority,
+          ] = results;
+
+          // Update states
+          const controlState = {
+            water: water.value,
+            led: led.value,
+            fan: {
+              state: fan.value,
+              velocity: Number(fanspeed.value),
+            },
+          };
+          const numberState = {
+            temperature: Number(temperature.value),
+            moisture: Number(moisture.value),
+            soilmoisture: Number(soilmoisture.value),
+            light: Number(light.value),
+          };
+          const priorityState = priority.value === "1";
+
+          // Get user from cookies or use initial state
+          const user = getCookie("user")
+            ? JSON.parse(getCookie("user") as string)
+            : initialState.user;
+
+          // Create record
+          CreateRecord(controlState, priorityState, numberState, user.uid);
+
+          // Optionally set states in cookies
+          setCookie("cs", JSON.stringify(controlState));
+          setCookie("ns", JSON.stringify(numberState));
+          setCookie("priority", priorityState);
+        })
+        .catch((error) => {
+          console.error("Failed to fetch or process data:", error);
+        });
+    }, refreshRate);
+
+    return () => clearInterval(intervalId); // Cleanup on component unmount
   }, []);
 
   let user;

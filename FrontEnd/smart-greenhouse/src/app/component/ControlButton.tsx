@@ -1,79 +1,67 @@
-"use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import useControl from "../hook/useControl";
 import { ControlContextType } from "../context/controlContext";
 import Create from "../../../action/Create";
 import toast from "react-hot-toast";
 import { usePathname } from "next/navigation";
-import { setCookie } from "cookies-next";
+import { setCookie, getCookie } from "cookies-next";
 import { motion } from "framer-motion";
+import GetLast from "../../../action/GetLast";
+
+const initialState = {
+  priority: false,
+};
 
 export default function ControlButton() {
   const { controlContext, setcontrolContext } =
     useControl() as ControlContextType;
   const pathname = usePathname();
+  initialState.priority = getCookie("priority")
+    ? getCookie("priority") === "true"
+    : false;
+
+  const handleControlToggle = (newValue: boolean) => {
+    toast.remove();
+    Create("priority", newValue ? 1 : 0);
+    setcontrolContext(newValue);
+    setCookie("priority", newValue);
+  };
+
+  const renderConfirmationDialog = (isManualControl: boolean) => {
+    return (
+      <div className="flex flex-col items-center gap-5">
+        <div>
+          {isManualControl
+            ? "The system is on autopilot mode, are you sure want to control it manually?"
+            : "Are you sure want to turn on the autopilot mode?"}
+        </div>
+        <div className="flex gap-10">
+          <button
+            className="bg-red-600 rounded-xl p-2"
+            onClick={() => handleControlToggle(!controlContext)}
+          >
+            Yes
+          </button>
+          <button
+            className="bg-green-600 rounded-xl p-2"
+            onClick={() => toast.remove()}
+          >
+            No
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <>
-      {pathname == "/dashboard" && (
+      {pathname === "/dashboard" && (
         <form
           action={(formData: FormData) => {
-            toast(
-              <>
-                {!controlContext && (
-                  <div className="flex flex-col items-center gap-5">
-                    <div>
-                      The system is on autopilot mode, are you sure want to
-                      control it manually?
-                    </div>
-                    <div className="flex gap-10">
-                      <button
-                        className=" bg-red-600 rounded-xl p-2"
-                        onClick={() => {
-                          toast.remove();
-                          Create("priority", 1);
-                          setcontrolContext(!controlContext);
-                          setCookie("priority", !controlContext);
-                        }}
-                      >
-                        Yes
-                      </button>
-                      <button
-                        className=" bg-green-600 rounded-xl p-2"
-                        onClick={() => toast.remove()}
-                      >
-                        No
-                      </button>
-                    </div>
-                  </div>
-                )}
-                {controlContext && (
-                  <div className="flex flex-col items-center gap-5">
-                    <div>Are you sure want to turn on the autopilot mode?</div>
-                    <div className="flex gap-10">
-                      <button
-                        className=" bg-red-600 rounded-xl p-2"
-                        onClick={() => {
-                          toast.remove();
-                          Create("priority", 0);
-                          setcontrolContext(!controlContext);
-                          setCookie("priority", !controlContext);
-                        }}
-                      >
-                        Yes
-                      </button>
-                      <button
-                        className=" bg-green-600 rounded-xl p-2"
-                        onClick={() => toast.remove()}
-                      >
-                        No
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </>,
-              { id: "control" }
-            );
+            toast(renderConfirmationDialog(!controlContext), {
+              id: "control",
+            });
           }}
         >
           <motion.button

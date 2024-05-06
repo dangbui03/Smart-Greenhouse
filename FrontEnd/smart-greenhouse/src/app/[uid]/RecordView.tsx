@@ -117,9 +117,9 @@ export default function RecordView(props: Props) {
         </h1>
         <div className=" md:text-5xl text-xl font-mono pb-4 md:pl-0 pl-5">
           <p className=" md:text-6xl ">Environment</p>
-          Temperature: {props.record.data.temperature.integerValue}°C
+          Temperature: {props.record.data.temperature.doubleValue}°C
           <br />
-          Moisture: {props.record.data.moisture.integerValue}%
+          Moisture: {props.record.data.moisture.doubleValue}%
           <br />
           Soil moisture: {props.record.data.soilmoisture.integerValue}%
           <br />
