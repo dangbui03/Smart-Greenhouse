@@ -3,12 +3,9 @@ import "regenerator-runtime/runtime";
 import React, { useEffect } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import Image from "next/image";
-import { motion, AnimatePresence, delay } from "framer-motion";
-import useControlState from "../hook/useControlState";
-import { ControlStateContextType } from "../context/controlStateContext";
-import Create from "../../../action/Create";
+import { motion } from "framer-motion";
+import Create from "../../../../action/Create";
 import toast from "react-hot-toast";
-import { setCookie } from "cookies-next";
 
 
 const SectionVars = {
@@ -30,12 +27,11 @@ const SectionVars = {
 };
 
 
-const Dictaphone = () => {
-  const { controlStateContext, setcontrolStateContext } =
-  useControlState();
+
+const Dictaphone = ({led, setLed, water, setWater, fan, setFan}) => {
+
   const processTranscript = (transcript) => {
     transcript = transcript.toLowerCase()
-    const newControlState = { ...controlStateContext };
 
     // Fan control
     if (transcript.includes('mở quạt') || 
@@ -46,13 +42,14 @@ const Dictaphone = () => {
         transcript.includes('activate fan') || 
         transcript.includes('fan on') || 
         transcript.includes('enable fan')) {
-        newControlState.fan = {
-          state: "2",
+
+        toast("🍃 Fan on",{id:"fanon"})
+        Create("fan", "2");
+        Create("fanspeed", 50);
+        setFan({
+          state: true,
           velocity: 50,
-        };
-        toast("🍃 Fan on")
-        Create("fan", newControlState.fan.state);
-        Create("fanspeed", newControlState.fan.velocity);
+        })
     } else if (transcript.includes('tắt quạt') || 
                transcript.includes('dừng quạt') || 
                transcript.includes('ngừng quạt') || 
@@ -60,13 +57,14 @@ const Dictaphone = () => {
                transcript.includes('stop fan') || 
                transcript.includes('disable fan') || 
                transcript.includes('fan off')) {
-        newControlState.fan = {
-          state: "3",
+
+        toast("Fan off",{id:"fanoff"})
+        Create("fan", "3");
+        Create("fanspeed", 0);
+        setFan({
+          state: false,
           velocity: 0,
-        };
-        toast("Fan off")
-        Create("fan", newControlState.fan.state);
-        Create("fanspeed", newControlState.fan.velocity);
+        })
     }
 
     if (transcript.includes('tăng tốc độ quạt') || 
@@ -76,10 +74,7 @@ const Dictaphone = () => {
         transcript.includes('fan faster') || 
         transcript.includes('speed up fan') || 
         transcript.includes('boost fan speed')) {
-          if (
-            controlStateContext?.fan.state == "0" ||
-            controlStateContext?.fan.state == "3"
-          ) {
+          if (!fan.state) {
             toast.error("Please turn on the fan first", {
               style: {
                 backgroundColor: "white",
@@ -87,9 +82,10 @@ const Dictaphone = () => {
               },
             });
           } else {
-        newControlState.fan.velocity = controlStateContext?.fan.velocity + 10 >= 100 ? 100 : controlStateContext?.fan.velocity + 10;
-        toast("⏫ Fan speed increased")
-        Create("fanspeed", newControlState.fan.velocity);
+        const velocity = fan.velocity + 10 >= 100 ? 100 : fan.velocity + 10
+        toast("⏫ Fan speed increased",{id:"speed"})
+        setFan({...fan, velocity: velocity})
+        Create("fanspeed", velocity)
         }
     } else if (transcript.includes('giảm tốc độ quạt') || 
                transcript.includes('giảm quạt') || 
@@ -98,10 +94,7 @@ const Dictaphone = () => {
                transcript.includes('fan slower') || 
                transcript.includes('slow down fan') || 
                transcript.includes('reduce fan speed')) {
-                if (
-                  controlStateContext?.fan.state == "0" ||
-                  controlStateContext?.fan.state == "3"
-                ) {
+                if (!fan.state) {
                   toast.error("Please turn on the fan first", {
                     style: {
                       backgroundColor: "white",
@@ -109,10 +102,11 @@ const Dictaphone = () => {
                     },
                   });
                 } else {
-        newControlState.fan.velocity = controlStateContext?.fan.velocity - 10 <= 10 ? 10 : controlStateContext?.fan.velocity - 10;
-        toast("⏬ Fan speed decreased")
-        Create("fanspeed", newControlState.fan.velocity);
-                }
+              const velocity =  fan.velocity - 10 <= 10 ? 10 : fan.velocity - 10
+              toast("⏫ Fan speed decreased",{id:"speed"})
+              setFan({...fan, velocity: velocity})
+              Create("fanspeed", velocity)
+              }
     }
 
     // Watering system control
@@ -124,11 +118,11 @@ const Dictaphone = () => {
         transcript.includes('start watering') || 
         transcript.includes('activate watering') || 
         transcript.includes('water on')) {
-        newControlState.water = '2';
         toast("💧Watering", {style:{
           backgroundColor: "rgb(191,219,254)"
-        }})
-        Create("water", newControlState.water);
+        },id:"wateron"})
+        setWater(true)
+        Create("water", "2");
     } else if (transcript.includes('tắt nước') || 
                transcript.includes('ngừng nước') || 
                transcript.includes('dừng nước') || 
@@ -136,11 +130,11 @@ const Dictaphone = () => {
                transcript.includes('stop watering') || 
                transcript.includes('disable watering') || 
                transcript.includes('water off')) {
-        newControlState.water = '3';
         toast("Stop watering", {style:{
           backgroundColor: "rgb(191,219,254)"
-        }})
-        Create("water", newControlState.water);
+        },id:"wateroff"})
+        setWater(false)
+        Create("water", "3");
     }
 
     // LED lighting system control
@@ -151,11 +145,11 @@ const Dictaphone = () => {
         transcript.includes('start lights') || 
         transcript.includes('activate lights') || 
         transcript.includes('lights on')) {
-        newControlState.led = '2';
         toast("🔦Light on", {style:{
           backgroundColor: "rgb(250,204,21)"
-        }})
-        Create("led", newControlState.led);
+        },id:"lighton"})
+        setLed(true)
+        Create("led", "2");
     } else if (transcript.includes('tắt đèn') || 
                transcript.includes('dừng đèn') || 
                transcript.includes('ngừng đèn') || 
@@ -163,28 +157,28 @@ const Dictaphone = () => {
                transcript.includes('stop lights') || 
                transcript.includes('disable lights') || 
                transcript.includes('lights off')) {
-        newControlState.led = '3';
         toast("Light off", {style:{
           backgroundColor: "rgb(250,204,21)"
-        }})
-        Create("led", newControlState.led);
+        },
+      id:"lightoff"})
+        setLed(false)
+        Create("led", "3");
     }
-
-    // Update the context with the new state
-    setCookie("cs", JSON.stringify(newControlState))
-    setcontrolStateContext(newControlState);
 };
 
   const {
     transcript,
     listening,
-    resetTranscript,
-    browserSupportsSpeechRecognition
   } = useSpeechRecognition();
 
   useEffect(() => {
     processTranscript(transcript)
   },[transcript])
+
+  const startListen = () => {
+    SpeechRecognition.startListening({continuous: true})
+  }
+
   return (
     <motion.section
     className={
@@ -202,7 +196,7 @@ const Dictaphone = () => {
       width={90}
       height={90}
     />
-      <button onClick={ listening ? SpeechRecognition.stopListening : SpeechRecognition.startListening} className=" absolute md:bottom-2 bottom-0 w-full h-full md:w-fit md:h-fit">
+      <button onClick={ listening ? SpeechRecognition.stopListening : startListen} className=" absolute md:bottom-2 bottom-0 w-full h-full md:w-fit md:h-fit">
       <Image
       className=" hidden md:block"
                   src={
@@ -219,4 +213,5 @@ const Dictaphone = () => {
 
   );
 };
+
 export default Dictaphone;

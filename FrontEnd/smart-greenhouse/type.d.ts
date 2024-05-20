@@ -4,15 +4,13 @@ type User = {
     photoURL: string | null,
     uid: string
 }
-type ControlState = {
-    priority?: string | undefined,
-    water: string | undefined,
-    led: string | undefined,
-    fan: {
-        state: string | undefined,
-        velocity: number | undefined,
-    }
+
+type fanState = {
+    state: boolean,
+    velocity: number,
 }
+
+
 
 type NumberState = {
     temperature: number,

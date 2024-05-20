@@ -14,9 +14,15 @@ function LightChart() {
       {
         label: "Light",
         data: [],
-        backgroundColor: ["rgb(250,204,21,1)"],
-        borderColor: "black",
         borderWidth: 2,
+        tension: 0.3,
+        fill: 'start',
+        backgroundColor: ["rgb(250,204,21,1)"],
+        borderColor: "yellow",
+        segment: {
+          backgroundColor: ctx => getSegmentBackgroundColor(ctx.p0.parsed.y),
+          borderColor: ctx => getSegmentBorderColor(ctx.p0.parsed.y),
+        },
       },
     ],
   });
@@ -30,9 +36,13 @@ function LightChart() {
           {
             label: "Light",
             data: result.map((data) => data.value).reverse(),
-            backgroundColor: ["rgb(250,204,21,1)"],
-            borderColor: "black",
             borderWidth: 2,
+            tension: 0.3,
+            fill: 'start',
+            segment: {
+              backgroundColor: ctx => getSegmentBackgroundColor(ctx.p0.parsed.y),
+              borderColor: ctx => getSegmentBorderColor(ctx.p0.parsed.y),
+            },
           },
         ],
       });
@@ -60,21 +70,36 @@ function LightChart() {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        }
-      }]
+      y: {
+        min: 0,
+        max: 6000,
+      },
     },
     plugins: {
       legend: {
         labels: {
           font: {
-            size: 10
+            size: 25
           }
         }
       }
     }
+  };
+
+  const getSegmentBackgroundColor = (value) => {
+    if (value <= 100) return "rgba(23,23,23,0.8)"; // very low
+    if (value > 100 && value <= 500) return "rgba(163,163,163,0.8)"; // low
+    if (value > 500 && value <= 1500) return "rgba(248,250,252,0.8)"; // normal
+    if (value > 1500 && value <= 3000) return "rgba(254,240,138,0.8)"; // bright
+    return "rgba(234,179,8,0.8)"; // very bright
+  };
+
+  const getSegmentBorderColor = (value) => {
+    if (value <= 100) return "rgb(23,23,23)"; // very low
+    if (value > 100 && value <= 500) return "rgb(163,163,163)"; // low
+    if (value > 500 && value <= 1500) return "rgb(248,250,252)"; // normal
+    if (value > 1500 && value <= 3000) return "rgb(254,240,138)"; // bright
+    return "rgb(234,179,8)"; // very bright
   };
 
   return (

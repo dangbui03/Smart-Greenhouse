@@ -1,20 +1,11 @@
 "use client";
 import GridLayout from "../component/GridLayout";
-import useAuth from "@/app/hook/useAuth";
-import { AuthContextType } from "@/app/context/authContext";
 import Image from "next/image";
 import { getCookie } from "cookies-next";
-import { useEffect, useState } from "react";
-import useControlState from "../hook/useControlState";
-import { ControlStateContextType } from "../context/controlStateContext";
+import { useEffect } from "react";
 import GetLast from "../../../action/GetLast";
-import useControl from "../hook/useControl";
-import { ControlContextType } from "../context/controlContext";
-import useNumberState from "../hook/useNumberState";
-import { NumberStateContextType } from "../context/numberStateContext";
 import { setCookie } from "cookies-next";
 import CreateRecord from "../../../action/CreateRecord";
-import dynamic from "next/dynamic";
 
 const initialState = {
   controlState: {

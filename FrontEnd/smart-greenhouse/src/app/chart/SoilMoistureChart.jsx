@@ -12,11 +12,17 @@ function SoilMoistureChart() {
     labels: [],
     datasets: [
       {
-        label: "Soil moisture",
+        label: "Soil Moisture",
         data: [],
-        backgroundColor: ["rgb(133,77,14,1)"],
-        borderColor: "black",
         borderWidth: 2,
+        tension: 0.3,
+        fill: 'start',
+        backgroundColor: ["rgb(133,77,14,1)"],
+        borderColor: "brown",
+        segment: {
+          backgroundColor: ctx => getSegmentBackgroundColor(ctx.p0.parsed.y),
+          borderColor: ctx => getSegmentBorderColor(ctx.p0.parsed.y),
+        },
       },
     ],
   });
@@ -28,11 +34,15 @@ function SoilMoistureChart() {
         labels: result.map((data) => new Date(data.created_at).toLocaleTimeString()).reverse(),
         datasets: [
           {
-            label: "Soil moisture",
+            label: "Soil Moisture",
             data: result.map((data) => data.value).reverse(),
-            backgroundColor: ["rgb(133,77,14,1)"],
-            borderColor: "black",
             borderWidth: 2,
+            tension: 0.3,
+            fill: 'start',
+            segment: {
+              backgroundColor: ctx => getSegmentBackgroundColor(ctx.p0.parsed.y),
+              borderColor: ctx => getSegmentBorderColor(ctx.p0.parsed.y),
+            },
           },
         ],
       });
@@ -60,21 +70,36 @@ function SoilMoistureChart() {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        }
-      }]
+      y: {
+        min: 0,
+        max: 100,
+      },
     },
     plugins: {
       legend: {
         labels: {
           font: {
-            size: 10
+            size: 25
           }
         }
       }
     }
+  };
+
+  const getSegmentBackgroundColor = (value) => {
+    if (value <= 20) return "rgba(217,119,6,0.8)"; // very dry
+    if (value > 20 && value <= 40) return "rgba(180,83,9,0.8)"; // dry
+    if (value > 40 && value <= 60) return "rgba(146,64,14,0.8)"; // normal
+    if (value > 60 && value <= 80) return "rgba(120,53,15,0.8)"; // moist
+    return "rgba(120,53,15,0.8)"; // very moist
+  };
+
+  const getSegmentBorderColor = (value) => {
+    if (value <= 20) return "rgb((217,119,6)"; // very dry
+    if (value > 20 && value <= 40) return "rgb(180,83,9)"; // dry
+    if (value > 40 && value <= 60) return "rgb(146,64,14)"; // normal
+    if (value > 60 && value <= 80) return "rgb(120,53,15)"; // moist
+    return "rgb(120,53,15)"; // very moist
   };
 
   return (

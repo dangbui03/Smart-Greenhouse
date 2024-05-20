@@ -14,9 +14,16 @@ function TemperatureChart() {
       {
         label: "Temperature",
         data: [],
-        backgroundColor: ["rgb(252,165,165,1)"],
-        borderColor: "black",
         borderWidth: 2,
+        backgroundColor: ["rgb(252,165,165,1)"],
+        borderColor: "pink",
+        pointBackgroundColor: "pink",
+        tension: 0.3,
+        fill: 'start',
+        segment: {
+          backgroundColor: ctx => getSegmentBackgroundColor(ctx.p0.parsed.y),
+          borderColor: ctx => getSegmentBorderColor(ctx.p0.parsed.y),
+        },
       },
     ],
   });
@@ -30,9 +37,13 @@ function TemperatureChart() {
           {
             label: "Temperature",
             data: result.map((data) => data.value).reverse(),
-            backgroundColor: ["rgb(252,165,165,1)"],
-            borderColor: "black",
             borderWidth: 2,
+            tension: 0.3,
+            fill: 'start',
+            segment: {
+              backgroundColor: ctx => getSegmentBackgroundColor(ctx.p0.parsed.y),
+              borderColor: ctx => getSegmentBorderColor(ctx.p0.parsed.y),
+            },
           },
         ],
       });
@@ -60,21 +71,36 @@ function TemperatureChart() {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        }
-      }]
+      y: {
+        min: -20,
+        max: 100,
+      },
     },
     plugins: {
       legend: {
         labels: {
           font: {
-            size: 10
+            size: 25
           }
         }
       }
     }
+  };
+
+  const getSegmentBackgroundColor = (value) => {
+    if (value <= 0) return "rgba(147,197,253,0.8)"; // cold
+    if (value > 0 && value <= 15) return "rgba(219,234,254,0.8)"; // cool
+    if (value > 15 && value <= 30) return "rgba(254,202,202,0.8)"; // warm
+    if (value > 30 && value <= 40) return "rgba(248,113,113,0.8)"; // hot
+    return "rgba(220,38,38,0.8)"; // very hot
+  };
+
+  const getSegmentBorderColor = (value) => {
+    if (value <= 0) return "rgb(147,197,253)"; // cold
+    if (value > 0 && value <= 15) return "rgb(219,234,254)"; // cool
+    if (value > 15 && value <= 30) return "rgb(254,202,202)"; // warm
+    if (value > 30 && value <= 40) return "rgb(248,113,113)"; // hot
+    return "rgb(220,38,38)"; // very hot
   };
 
   return (

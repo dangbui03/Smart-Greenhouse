@@ -6,9 +6,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import RecordView from "./RecordView";
 import BackButton from "./BackButton";
+import GetRecord from "../../../action/GetRecord";
 
 interface Props {
-  records: any;
+  uid: string;
 }
 
 const UlVars = {
@@ -52,21 +53,25 @@ const LiVars = {
   },
 };
 
-export default function RecordList({ records }: Props) {
+export default async function RecordList({ uid }: Props) {
   const [clicked, setClicked] = useState(false);
   const [indexC, setIndexC] = useState(0);
   let mapped: StateRecord[] = [];
 
-  records = records.forEach((record: any) => {
-    mapped.push({
-      id: record._key.path.segments[record._key.path.segments.length - 1],
-      data: record._document.data.value.mapValue.fields,
+  // records = records.forEach((record: any) => {
+  //   mapped.push({
+  //     id: record._key.path.segments[record._key.path.segments.length - 1],
+  //     data: record._document.data.value.mapValue.fields,
+  //   });
+  // });
+  const records = GetRecord(uid).then((result) => {
+    result.forEach((doc) => {
+      console.log(doc.id, " => ", doc.data());
     });
   });
-
   return (
     <>
-      <motion.ul
+      {/* <motion.ul
         variants={UlVars}
         initial="initial"
         animate="animate"
@@ -99,7 +104,7 @@ export default function RecordList({ records }: Props) {
             )}
           </motion.li>
         ))}
-      </motion.ul>
+      </motion.ul> */}
     </>
   );
 }

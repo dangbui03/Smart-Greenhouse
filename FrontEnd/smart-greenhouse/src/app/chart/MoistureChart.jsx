@@ -14,9 +14,15 @@ function MoistureChart() {
       {
         label: "Moisture",
         data: [],
-        backgroundColor: ["rgb(191,219,254,1)"],
-        borderColor: "black",
         borderWidth: 2,
+        tension: 0.3,
+        fill: 'start',
+        backgroundColor: ["rgb(191,219,254,1)"],
+        borderColor: "blue",
+        segment: {
+          backgroundColor: ctx => getSegmentBackgroundColor(ctx.p0.parsed.y),
+          borderColor: ctx => getSegmentBorderColor(ctx.p0.parsed.y),
+        },
       },
     ],
   });
@@ -30,9 +36,13 @@ function MoistureChart() {
           {
             label: "Moisture",
             data: result.map((data) => data.value).reverse(),
-            backgroundColor: ["rgb(191,219,254,1)"],
-            borderColor: "black",
             borderWidth: 2,
+            tension: 0.3,
+            fill: 'start',
+            segment: {
+              backgroundColor: ctx => getSegmentBackgroundColor(ctx.p0.parsed.y),
+              borderColor: ctx => getSegmentBorderColor(ctx.p0.parsed.y),
+            },
           },
         ],
       });
@@ -60,21 +70,36 @@ function MoistureChart() {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        }
-      }]
+      y: {
+        min: 0,
+        max: 100,
+      },
     },
     plugins: {
       legend: {
         labels: {
           font: {
-            size: 10
+            size: 25
           }
         }
       }
     }
+  };
+
+  const getSegmentBackgroundColor = (value) => {
+    if (value <= 20) return "rgba(239,246,255,0.8)"; // very dry
+    if (value > 20 && value <= 40) return "rgba(219,234,254,0.8)"; // dry
+    if (value > 40 && value <= 60) return "rgba(191,219,254,0.8)"; // normal
+    if (value > 60 && value <= 80) return "rgba(147,197,253,0.8)"; // moist
+    return "rgba(96,165,250,0.8)"; // very moist
+  };
+
+  const getSegmentBorderColor = (value) => {
+    if (value <= 20) return "rgb(239,246,255)"; // very dry
+    if (value > 20 && value <= 40) return "rgb(219,234,254)"; // dry
+    if (value > 40 && value <= 60) return "rgb(191,219,254)"; // normal
+    if (value > 60 && value <= 80) return "rgb(147,197,253)"; // moist
+    return "rgb(96,165,250)"; // very moist
   };
 
   return (

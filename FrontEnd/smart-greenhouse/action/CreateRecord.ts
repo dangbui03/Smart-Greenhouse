@@ -1,8 +1,8 @@
-"use server"
+"use client"
 import { auth, db } from "../firebase/firebaseConfig"
 import { doc, setDoc, getDoc } from "firebase/firestore";
 
-export default async function CreateRecord(state: ControlState, priority: Boolean, number: NumberState, uid: string) {
+export default async function CreateRecord(state: any, priority: Boolean, number: NumberState, uid: string) {
     if (state) {
         if (number) {
             if (uid) {
@@ -22,7 +22,6 @@ export default async function CreateRecord(state: ControlState, priority: Boolea
                 });
             }
         }
-
     }
 
 }

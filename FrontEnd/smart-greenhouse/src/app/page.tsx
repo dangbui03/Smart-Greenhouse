@@ -81,16 +81,17 @@ export default function Home() {
                 className={"w-full flex justify-center "}
                 action={async (formData) => {
                   const result = await SignAction(formData);
-                  const u: User = {
-                    displayName: (auth.currentUser as User).displayName,
-                    email: (auth.currentUser as User).email,
-                    photoURL: (auth.currentUser as User).photoURL,
-                    uid: (auth.currentUser as User).uid,
-                  };
-                  setAuthContext(u);
-                  setCookie("user", JSON.stringify(u));
-                  router.push("/dashboard", { scroll: false });
-                  console.log(auth.currentUser);
+                  if (result) {
+                    const u: User = {
+                      displayName: (auth.currentUser as User).displayName,
+                      email: (auth.currentUser as User).email,
+                      photoURL: (auth.currentUser as User).photoURL,
+                      uid: (auth.currentUser as User).uid,
+                    };
+                    setAuthContext(u);
+                    setCookie("user", JSON.stringify(u));
+                    router.push("/dashboard", { scroll: false });
+                  }
                 }}
               >
                 <motion.button

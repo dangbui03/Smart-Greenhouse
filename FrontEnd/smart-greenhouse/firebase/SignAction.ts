@@ -1,3 +1,5 @@
+"client"
+
 import { auth, db } from "./firebaseConfig"
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { OAuthCredential } from "firebase/auth";
@@ -26,4 +28,6 @@ export default async function SignAction(formData: FormData) {
         const errorMessage = error.message;
         const credential = GoogleAuthProvider.credentialFromError(error);
     });
+
+    return result
 }
