@@ -105,10 +105,13 @@ function TemperatureChart() {
 
   return (
     <>
-      <div className="flex md:hidden mt-5 m-2" style={{ width: "18rem", height: "20rem" }}>
+      <div className="flex lg:hidden md:hidden mt-5 m-2" style={{ width: "18rem", height: "20rem" }}>
         <Line data={temperatureData} ref={chartRef} options={chartOptions} />
       </div>
-      <div className="hidden md:flex" style={{ width: "40rem", height: "30rem" }}>
+      <div className="hidden lg:hidden md:flex" style={{ width: "35rem", height: "25rem" }}>
+        <Line data={temperatureData} ref={chartRef} options={chartOptions} />
+      </div>
+      <div className="hidden lg:flex md:hidden mt-5 m-2" style={{ width: "40rem", height: "35rem" }}>
         <Line data={temperatureData} ref={chartRef} options={chartOptions} />
       </div>
     </>

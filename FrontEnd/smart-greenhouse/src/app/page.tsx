@@ -55,20 +55,20 @@ export default function Home() {
             initial="initial"
             animate="animate"
             exit="exit"
-            className="flex items-center flex-col absolute left-0 h-screen w-full p-2 md:w-96 md:p-0"
+            className="flex items-center flex-col absolute left-0 h-screen w-full p-2 lg:w-96 lg:p-0"
             style={{ backgroundColor: "#398254" }}
           >
             <Image src="/logo.png" alt="sign out" width={500} height={500} />
             <section className="flex justify-center items-center flex-col">
               <div
                 className={
-                  " text-6xl md:text-7xl text-green-50 " + Brandford.className
+                  " text-6xl lg:text-7xl text-green-50 " + Brandford.className
                 }
               >
                 SMART
               </div>
               <div
-                className={" text-7xl md:text-8xl " + VintageKing.className}
+                className={" text-7xl lg:text-8xl " + VintageKing.className}
                 style={{
                   color: "#A8E065",
                 }}

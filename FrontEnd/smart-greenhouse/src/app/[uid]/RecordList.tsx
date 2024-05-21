@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { DocumentData } from "firebase/firestore";
-import Image from "next/image";
 import { motion } from "framer-motion";
-import RecordView from "./RecordView";
 import GetRecord from "../../../action/GetRecord";
 import LoadMoreButton from "./LoadMoreButton"; // Import the new component
+import RecordListItem from "./RecordListItem"; // Import the new RecordListItem component
+import RecordView from "./RecordView";
 
 interface Props {
   uid: string;
@@ -36,24 +36,6 @@ const UlVars = {
       delayChildren: 0.3,
       staggerDirection: -1,
     },
-  },
-};
-
-const LiVars = {
-  initial: {
-    x: 10,
-    y: 10,
-    opacity: 0,
-  },
-  animate: {
-    x: 0,
-    y: 0,
-    opacity: 1,
-  },
-  exit: {
-    x: 10,
-    y: 0,
-    opacity: 0,
   },
 };
 
@@ -107,33 +89,23 @@ export default function RecordList({ uid }: Props) {
         initial="initial"
         animate="animate"
         exit="exit"
-        className="h-full w-full flex-grow bg-white rounded-l-3xl flex flex-wrap gap-10 overflow-scroll justify-center md:justify-normal"
+        className=" py-3 h-full w-full flex-grow bg-white rounded-l-3xl flex flex-wrap gap-7 justify-center md:justify-normal lg:justify-normal overflow-y-auto overflow-x-hidden"
       >
         {mapped.map((doc, index) => (
-          <motion.li
-            variants={LiVars}
-            key={index}
-            className="flex justify-center items-center w-52"
-          >
-            <button
-              className="flex justify-center items-center flex-col"
-              onClick={() => {
-                setClicked(true);
-                setIndexC(index);
-              }}
-            >
-              {doc.id}
-              <Image
-                src="/icon/record-svgrepo-com.svg"
-                alt="record"
-                width={100}
-                height={50}
-              />
-            </button>
-            {clicked && index == indexC && (
+          <>
+            {clicked && index === indexC && (
               <RecordView record={doc} setClicked={setClicked} />
             )}
-          </motion.li>
+            <RecordListItem
+              key={index}
+              record={doc}
+              index={index}
+              clicked={clicked}
+              indexC={indexC}
+              setClicked={setClicked}
+              setIndexC={setIndexC}
+            />
+          </>
         ))}
         <LoadMoreButton
           loading={loading}

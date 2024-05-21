@@ -41,7 +41,7 @@ export default function ChartSection() {
   return (
     <motion.section
       id="canvas"
-      className="chartArea bg-slate-100 md:ml-10 rounded-xl mb-10 md:flex md:justify-center md:items-center md:gap-5 my-2"
+      className="chartArea bg-slate-100 lg:ml-10 rounded-xl mb-10 lg:flex lg:justify-center lg:items-center lg:gap-5 my-2"
       variants={ChartVars}
       initial="initial"
       animate="animate"
@@ -49,7 +49,7 @@ export default function ChartSection() {
     >
       <motion.button
         onClick={() => moveLeft()}
-        className="md:flex hidden"
+        className="lg:flex hidden"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 1.1 }}
       >
@@ -64,7 +64,7 @@ export default function ChartSection() {
       {chart == 1 && <MoistureChart />}
       {chart == 2 && <SoilMoistureChart />}
       {chart == 3 && <LightChart />}
-      <section className="flex justify-evenly md:hidden items-center">
+      <section className="flex justify-evenly lg:hidden items-center">
         <motion.button
           onClick={() => moveLeft()}
           whileHover={{ scale: 1.1 }}
@@ -95,7 +95,7 @@ export default function ChartSection() {
       </section>
       <motion.button
         onClick={() => moveRight()}
-        className="md:flex hidden"
+        className="lg:flex hidden"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 1.1 }}
       >

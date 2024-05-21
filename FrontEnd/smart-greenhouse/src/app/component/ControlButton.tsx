@@ -73,7 +73,7 @@ const ControlButton = () => {
       {pathname === "/dashboard" && (
         <form onSubmit={handleFormSubmit}>
           <motion.button
-            className="md:hidden flex"
+            className="lg:hidden flex"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 1.1 }}
           >
@@ -85,7 +85,7 @@ const ControlButton = () => {
             />
           </motion.button>
           <motion.button
-            className="md:flex hidden"
+            className="lg:flex hidden"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 1.1 }}
           >

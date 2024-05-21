@@ -59,12 +59,12 @@ export default function WaterButton({ water, setWater }: Props) {
           height={90}
         />
         <button
-          className="absolute md:bottom-2 bottom-0 w-full h-full md:w-fit md:h-fit cursor-not-allowed"
+          className="absolute lg:bottom-2 bottom-0 w-full h-full lg:w-fit lg:h-fit cursor-not-allowed"
           type="button"
           disabled
         >
           <Image
-            className="hidden md:block"
+            className="hidden lg:block"
             src="/icon/off-rounded-svgrepo-com.svg"
             alt="water on/off"
             width={50}
@@ -89,12 +89,12 @@ export default function WaterButton({ water, setWater }: Props) {
         height={90}
       />
       <button
-        className="absolute md:bottom-2 bottom-0 w-full h-full md:w-fit md:h-fit"
+        className="absolute lg:bottom-2 bottom-0 w-full h-full lg:w-fit lg:h-fit"
         type="button"
         onClick={handleButtonClick}
       >
         <Image
-          className="hidden md:block"
+          className="hidden lg:block"
           src={
             water
               ? "/icon/on-rounded-svgrepo-com.svg"

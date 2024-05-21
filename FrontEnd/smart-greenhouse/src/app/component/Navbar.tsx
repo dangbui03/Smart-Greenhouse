@@ -29,7 +29,7 @@ const NavVars = {
 export default function Navbar() {
   return (
     <motion.nav
-      className="navArea bg-slate-100 my-10 mx-32 rounded-full md:flex justify-center items-center gap-80 hidden"
+      className="navArea bg-slate-100 my-10 mx-32 rounded-full lg:flex justify-center items-center gap-80 hidden"
       variants={NavVars}
       initial="initial"
       animate="animate"

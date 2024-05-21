@@ -131,11 +131,11 @@ export default function Sidebar() {
               variants={SectionVars}
             >
               <div className=" absolute bottom-0 flex">
-                <div className=" w-7 h-8 md:w-10 md:h-10 bg-blue-300"></div>
-                <div className=" w-7 h-8 md:w-10 md:h-10 bg-blue-100"></div>
-                <div className=" w-7 h-8 md:w-10 md:h-10 bg-red-200"></div>
-                <div className=" w-7 h-8 md:w-10 md:h-10 bg-red-400"></div>
-                <div className=" w-7 h-8 md:w-10 md:h-10 bg-red-600"></div>
+                <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-blue-300"></div>
+                <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-blue-100"></div>
+                <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-red-200"></div>
+                <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-red-400"></div>
+                <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-red-600"></div>
               </div>
               <Image
                 src="/icon/temperature-half-svgrepo-com.svg"
@@ -155,11 +155,11 @@ export default function Sidebar() {
               variants={SectionVars}
             >
               <div className=" absolute bottom-0 flex">
-                <div className=" w-7 h-8 md:w-10 md:h-10 bg-blue-50"></div>
-                <div className=" w-7 h-8 md:w-10 md:h-10 bg-blue-100"></div>
-                <div className=" w-7 h-8 md:w-10 md:h-10 bg-blue-200"></div>
-                <div className=" w-7 h-8 md:w-10 md:h-10 bg-blue-300"></div>
-                <div className=" w-7 h-8 md:w-10 md:h-10 bg-blue-400"></div>
+                <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-blue-50"></div>
+                <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-blue-100"></div>
+                <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-blue-200"></div>
+                <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-blue-300"></div>
+                <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-blue-400"></div>
               </div>
               <Image
                 src="/icon/moisture-svgrepo-com.svg"
@@ -179,11 +179,11 @@ export default function Sidebar() {
               variants={SectionVars}
             >
               <div className=" absolute bottom-0 flex">
-                <div className=" w-7 h-8 md:w-10 md:h-10 bg-amber-600"></div>
-                <div className=" w-7 h-8 md:w-10 md:h-10 bg-amber-700"></div>
-                <div className=" w-7 h-8 md:w-10 md:h-10 bg-amber-800"></div>
-                <div className=" w-7 h-8 md:w-10 md:h-10 bg-amber-900"></div>
-                <div className=" w-7 h-8 md:w-10 md:h-10 bg-amber-950"></div>
+                <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-amber-600"></div>
+                <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-amber-700"></div>
+                <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-amber-800"></div>
+                <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-amber-900"></div>
+                <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-amber-950"></div>
               </div>
               <Image
                 src="/icon/soil-moisture-svgrepo-com.svg"
@@ -203,11 +203,11 @@ export default function Sidebar() {
               variants={SectionVars}
             >
               <div className=" absolute bottom-0 flex">
-                <div className=" w-7 h-8 md:w-10 md:h-10 bg-neutral-900"></div>
-                <div className=" w-7 h-8 md:w-10 md:h-10 bg-neutral-400"></div>
-                <div className=" w-7 h-8 md:w-10 md:h-10 bg-slate-50"></div>
-                <div className=" w-7 h-8 md:w-10 md:h-10 bg-yellow-200"></div>
-                <div className=" w-7 h-8 md:w-10 md:h-10 bg-yellow-500"></div>
+                <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-neutral-900"></div>
+                <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-neutral-400"></div>
+                <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-slate-50"></div>
+                <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-yellow-200"></div>
+                <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-yellow-500"></div>
               </div>
               <Image
                 src="/icon/light-svgrepo-com.svg"

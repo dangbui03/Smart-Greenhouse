@@ -54,11 +54,11 @@ export default function LedButton({ led, setLed }: Props) {
           height={90}
         />
         <button
-          className="absolute md:bottom-2 bottom-0 w-full h-full md:w-fit md:h-fit cursor-not-allowed"
+          className="absolute lg:bottom-2 bottom-0 w-full h-full lg:w-fit lg:h-fit cursor-not-allowed"
           disabled
         >
           <Image
-            className="hidden md:block"
+            className="hidden lg:block"
             src="/icon/off-rounded-svgrepo-com.svg"
             alt="led on/off"
             width={50}
@@ -90,11 +90,11 @@ export default function LedButton({ led, setLed }: Props) {
       />
       <button
         type="button"
-        className="absolute md:bottom-2 bottom-0 w-full h-full md:w-fit md:h-fit"
+        className="absolute lg:bottom-2 bottom-0 w-full h-full lg:w-fit lg:h-fit"
         onClick={handleToggle}
       >
         <Image
-          className="hidden md:block"
+          className="hidden lg:block"
           src={
             led
               ? "/icon/on-rounded-svgrepo-com.svg"

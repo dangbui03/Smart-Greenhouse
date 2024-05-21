@@ -40,7 +40,7 @@ export default function NumberState(props: Props) {
   };
 
   return (
-    <p className="w-32 h-32 flex justify-center items-center md:text-4xl text-3xl">
+    <p className="w-32 h-32 flex justify-center items-center lg:text-4xl text-3xl">
       {!loading && renderValue()}
     </p>
   );

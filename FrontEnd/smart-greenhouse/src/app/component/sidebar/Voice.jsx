@@ -196,9 +196,9 @@ const Dictaphone = ({led, setLed, water, setWater, fan, setFan}) => {
       width={90}
       height={90}
     />
-      <button onClick={ listening ? SpeechRecognition.stopListening : startListen} className=" absolute md:bottom-2 bottom-0 w-full h-full md:w-fit md:h-fit">
+      <button onClick={ listening ? SpeechRecognition.stopListening : startListen} className=" absolute lg:bottom-2 bottom-0 w-full h-full lg:w-fit lg:h-fit">
       <Image
-      className=" hidden md:block"
+      className=" hidden lg:block"
                   src={
                     listening
                       ? "/icon/on-rounded-svgrepo-com.svg"

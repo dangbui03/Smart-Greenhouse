@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast";
 export default function GridLayout() {
   return (
     <>
-      <main className=" md:grid gridLayout md:h-screen md:items-stretch md:justify-stretch flex flex-col items-center justify-center">
+      <main className=" lg:grid gridLayout lg:h-screen lg:items-stretch lg:justify-stretch flex flex-col items-center justify-center">
         <Navbar />
         <ChartSection />
         <Sidebar />

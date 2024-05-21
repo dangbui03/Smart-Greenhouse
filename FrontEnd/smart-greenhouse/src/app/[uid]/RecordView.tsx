@@ -50,6 +50,8 @@ const RVars = {
   },
 };
 
+import getAdvice from "./getAdvice"; // Import the getAdvice function
+
 export default function RecordView({ record, setClicked }: Props) {
   const handleClose = () => {
     setClicked(false);
@@ -58,7 +60,7 @@ export default function RecordView({ record, setClicked }: Props) {
   return (
     <section className="flex absolute top-0 right-0 w-screen h-screen">
       {/* Close button for desktop */}
-      <section className="absolute top-2 right-2 z-50 md:block hidden">
+      <section className="absolute top-2 right-2 z-50 lg:block hidden">
         <motion.button whileHover={{ scale: 1.3 }} onClick={handleClose}>
           <Image
             src="/icon/cross-svgrepo-com.svg"
@@ -69,7 +71,7 @@ export default function RecordView({ record, setClicked }: Props) {
         </motion.button>
       </section>
       {/* Close button for mobile */}
-      <section className="md:hidden absolute top-2 right-2 z-50">
+      <section className="lg:hidden absolute top-2 right-2 z-50">
         <motion.button whileHover={{ scale: 1.3 }} onClick={handleClose}>
           <Image
             src="/icon/cross-svgrepo-com.svg"
@@ -79,56 +81,49 @@ export default function RecordView({ record, setClicked }: Props) {
           />
         </motion.button>
       </section>
-      {/* Record icon for desktop */}
+
       <motion.section
-        className="md:flex justify-center items-center w-full hidden"
-        style={{
-          backdropFilter: "blur(10px)",
-        }}
-        variants={LVars}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-      >
-        <Image
-          src="/icon/record-svgrepo-com.svg"
-          alt="record"
-          width={500}
-          height={50}
-        />
-      </motion.section>
-      {/* Record details */}
-      <motion.section
-        className="bg-white flex-grow md:p-5 p-0 rounded-xl md:w-fit w-full md:block flex justify-center flex-col"
+        className="bg-white flex-grow p-5 rounded-l-xl w-full lg:h-full h-fit flex justify-center flex-col z-40 mx-auto absolute top-0 right-0"
         variants={RVars}
         initial="initial"
         animate="animate"
         exit="exit"
       >
-        {/* Record ID and Mode */}
-        <h1 className="text-7xl text-center font-bold py-7 md:block hidden">
-          {record.id} - {record.data.mode.booleanValue ? "Manual" : "Autopilot"}
-        </h1>
-        <h1 className="text-xl text-center font-bold pb-10 w-full md:hidden block">
-          {record.id} <br />
-          {record.data.mode.booleanValue ? "Manual" : "Autopilot"}
-        </h1>
-        {/* Environment information */}
-        <div className="md:text-5xl text-xl font-mono pb-4 md:pl-0 pl-5">
-          <p className="md:text-6xl">Environment</p>
-          <p>Temperature: {record.data.temperature}°C</p>
-          <p>Moisture: {record.data.moisture}%</p>
-          <p>Soil Moisture: {record.data.soilmoisture}%</p>
-          <p>Light: {record.data.light}lx</p>
+        <div className="flex justify-center items-center">
+          <h1 className="text-4xl font-bold py-4 lg:block hidden">
+            {record.id} - {record.data.mode ? "Manual" : "Autopilot"}
+          </h1>
+          <h1 className="text-xl font-bold pb-4 w-full lg:hidden block text-center">
+            {record.id} <br />
+            {record.data.mode ? "Manual" : "Autopilot"}
+          </h1>
         </div>
-        {/* Device status */}
-        <div className="md:text-5xl text-xl font-mono md:pl-0 pl-5">
-          <p className="md:text-6xl">Device Status</p>
-          <p>Fan: {record.data.fan ? "On" : "Off"}</p>
-          <p>Fan Speed: {record.data.fanspeed}</p>
-          <p>Water: {record.data.water ? "On" : "Off"}</p>
-          <p>LED: {record.data.led ? "On" : "Off"}</p>
-        </div>
+        <section className="lg:flex lg:justify-center lg:flex-row lg:gap-10 flex flex-col-reverse">
+          <section className="lg:flex bg-white justify-center lg:w-3/5 h-full z-40">
+            <div className="lg:text-xl text-xl font-mono mt-10">
+              <p className="lg:text-4xl font-bold text-center">Advice</p>
+              {getAdvice(record)}
+            </div>
+          </section>
+          <section className="mt-10 lg:w-96">
+            {/* Environment information */}
+            <div className="lg:text-3xl text-xl font-mono pb-4 text-center lg:text-left">
+              <p className="lg:text-4xl font-bold text-center">Environment</p>
+              <p>Temperature: {record.data.temperature}°C</p>
+              <p>Moisture: {record.data.moisture}%</p>
+              <p>Soil Moisture: {record.data.soilmoisture}%</p>
+              <p>Light: {record.data.light}lx</p>
+            </div>
+            {/* Device status */}
+            <div className="lg:text-3xl text-xl font-mono text-center lg:text-left">
+              <p className="lg:text-4xl font-bold text-center">Device Status</p>
+              <p>Fan: {record.data.fan ? "On" : "Off"}</p>
+              <p>Fan Speed: {record.data.fanspeed}</p>
+              <p>Water: {record.data.water ? "On" : "Off"}</p>
+              <p>LED: {record.data.led ? "On" : "Off"}</p>
+            </div>
+          </section>
+        </section>
       </motion.section>
     </section>
   );
