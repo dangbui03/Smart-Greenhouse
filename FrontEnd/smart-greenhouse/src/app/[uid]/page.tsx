@@ -22,17 +22,6 @@ export default async function Uid({ params: { uid } }: Props) {
         <BackButton />
         <RecordList uid={uid} />
       </main>
-
-      {/* {docSnap.empty && (
-        <main className=" h-screen w-screen flex justify-center items-center">
-          <Image
-            src="/nothing.png"
-            alt="bb warned you"
-            width={500}
-            height={500}
-          />
-        </main>
-      )} */}
     </>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import Image from "next/image";
 import useControl from "../hook/useControl";
 import { ControlContextType } from "../context/controlContext";
@@ -7,29 +7,32 @@ import toast from "react-hot-toast";
 import { usePathname } from "next/navigation";
 import { setCookie, getCookie } from "cookies-next";
 import { motion } from "framer-motion";
-import GetLast from "../../../action/GetLast";
 
-const initialState = {
-  priority: false,
-};
-
-export default function ControlButton() {
+const ControlButton = () => {
   const { controlContext, setcontrolContext } =
     useControl() as ControlContextType;
   const pathname = usePathname();
-  initialState.priority = getCookie("priority")
-    ? getCookie("priority") === "true"
-    : false;
 
-  const handleControlToggle = (newValue: boolean) => {
-    toast.remove();
-    Create("priority", newValue ? 1 : 0);
-    setcontrolContext(newValue);
-    setCookie("priority", newValue);
-  };
+  const initialPriority = useMemo(() => {
+    return getCookie("priority") ? getCookie("priority") === "true" : false;
+  }, []);
 
-  const renderConfirmationDialog = (isManualControl: boolean) => {
-    return (
+  useEffect(() => {
+    setcontrolContext(initialPriority);
+  }, [initialPriority, setcontrolContext]);
+
+  const handleControlToggle = useCallback(
+    (newValue: boolean) => {
+      toast.remove();
+      Create("priority", newValue ? 1 : 0);
+      setcontrolContext(newValue);
+      setCookie("priority", newValue);
+    },
+    [setcontrolContext]
+  );
+
+  const renderConfirmationDialog = useCallback(
+    (isManualControl: boolean) => (
       <div className="flex flex-col items-center gap-5">
         <div>
           {isManualControl
@@ -51,19 +54,24 @@ export default function ControlButton() {
           </button>
         </div>
       </div>
-    );
-  };
+    ),
+    [controlContext, handleControlToggle]
+  );
+
+  const handleFormSubmit = useCallback(
+    (event: any) => {
+      event.preventDefault();
+      toast(renderConfirmationDialog(!controlContext), {
+        id: "control",
+      });
+    },
+    [controlContext, renderConfirmationDialog]
+  );
 
   return (
     <>
       {pathname === "/dashboard" && (
-        <form
-          action={(formData: FormData) => {
-            toast(renderConfirmationDialog(!controlContext), {
-              id: "control",
-            });
-          }}
-        >
+        <form onSubmit={handleFormSubmit}>
           <motion.button
             className="md:hidden flex"
             whileHover={{ scale: 1.1 }}
@@ -92,4 +100,6 @@ export default function ControlButton() {
       )}
     </>
   );
-}
+};
+
+export default ControlButton;

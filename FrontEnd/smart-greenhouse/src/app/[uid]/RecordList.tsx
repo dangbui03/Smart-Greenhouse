@@ -1,15 +1,19 @@
 "use client";
-import React, { useState } from "react";
-import { QuerySnapshot, DocumentData } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { DocumentData } from "firebase/firestore";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
+import { motion } from "framer-motion";
 import RecordView from "./RecordView";
-import BackButton from "./BackButton";
 import GetRecord from "../../../action/GetRecord";
+import LoadMoreButton from "./LoadMoreButton"; // Import the new component
 
 interface Props {
   uid: string;
+}
+
+interface StateRecord {
+  id: string;
+  data: DocumentData;
 }
 
 const UlVars = {
@@ -48,35 +52,62 @@ const LiVars = {
   },
   exit: {
     x: 10,
-    y: 10,
+    y: 0,
     opacity: 0,
   },
 };
 
-export default async function RecordList({ uid }: Props) {
+export default function RecordList({ uid }: Props) {
   const [clicked, setClicked] = useState(false);
   const [indexC, setIndexC] = useState(0);
-  let mapped: StateRecord[] = [];
+  const [mapped, setMapped] = useState<StateRecord[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [hasMore, setHasMore] = useState<boolean>(true); // New state to track if there are more records
 
-  // records = records.forEach((record: any) => {
-  //   mapped.push({
-  //     id: record._key.path.segments[record._key.path.segments.length - 1],
-  //     data: record._document.data.value.mapValue.fields,
-  //   });
-  // });
-  const records = GetRecord(uid).then((result) => {
-    result.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
-    });
-  });
+  const fetchInitialRecords = async () => {
+    setLoading(true);
+    try {
+      const { docSnap, hasMore } = await GetRecord(uid);
+      const newRecords: StateRecord[] = docSnap.docs.map((doc) => ({
+        id: doc.id,
+        data: doc.data(),
+      }));
+      setMapped(newRecords);
+      setHasMore(hasMore); // Update the hasMore state
+    } catch (error) {
+      console.error("Error fetching initial records:", error);
+    }
+    setLoading(false);
+  };
+
+  const fetchMoreRecords = async () => {
+    setLoading(true);
+    try {
+      const { docSnap, hasMore } = await GetRecord(uid, true);
+      const newRecords: StateRecord[] = docSnap.docs.map((doc) => ({
+        id: doc.id,
+        data: doc.data(),
+      }));
+      setMapped((prevRecords) => [...prevRecords, ...newRecords]);
+      setHasMore(hasMore); // Update the hasMore state
+    } catch (error) {
+      console.error("Error fetching more records:", error);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchInitialRecords();
+  }, [uid]);
+
   return (
     <>
-      {/* <motion.ul
+      <motion.ul
         variants={UlVars}
         initial="initial"
         animate="animate"
         exit="exit"
-        className="h-full w-full flex-grow bg-white flex flex-wrap gap-10 overflow-scroll justify-center"
+        className="h-full w-full flex-grow bg-white rounded-l-3xl flex flex-wrap gap-10 overflow-scroll justify-center md:justify-normal"
       >
         {mapped.map((doc, index) => (
           <motion.li
@@ -104,7 +135,12 @@ export default async function RecordList({ uid }: Props) {
             )}
           </motion.li>
         ))}
-      </motion.ul> */}
+        <LoadMoreButton
+          loading={loading}
+          fetchMoreRecords={fetchMoreRecords}
+          hasMore={hasMore}
+        />
+      </motion.ul>
     </>
   );
 }

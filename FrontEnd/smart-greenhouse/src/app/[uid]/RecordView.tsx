@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 
 interface Props {
@@ -50,41 +50,38 @@ const RVars = {
   },
 };
 
-export default function RecordView(props: Props) {
+export default function RecordView({ record, setClicked }: Props) {
+  const handleClose = () => {
+    setClicked(false);
+  };
+
   return (
     <section className="flex absolute top-0 right-0 w-screen h-screen">
+      {/* Close button for desktop */}
       <section className="absolute top-2 right-2 z-50 md:block hidden">
-        <motion.button
-          whileHover={{ scale: 1.3 }}
-          onClick={() => {
-            props.setClicked(false);
-          }}
-        >
+        <motion.button whileHover={{ scale: 1.3 }} onClick={handleClose}>
           <Image
             src="/icon/cross-svgrepo-com.svg"
-            alt="move left"
+            alt="close"
             width={40}
             height={40}
           />
         </motion.button>
       </section>
-      <section className="md:hidden absolute top-2 right-2  z-50">
-        <motion.button
-          whileHover={{ scale: 1.3 }}
-          onClick={() => {
-            props.setClicked(false);
-          }}
-        >
+      {/* Close button for mobile */}
+      <section className="md:hidden absolute top-2 right-2 z-50">
+        <motion.button whileHover={{ scale: 1.3 }} onClick={handleClose}>
           <Image
             src="/icon/cross-svgrepo-com.svg"
-            alt="move left"
+            alt="close"
             width={30}
             height={30}
           />
         </motion.button>
       </section>
+      {/* Record icon for desktop */}
       <motion.section
-        className=" md:flex justify-center items-center w-full hidden"
+        className="md:flex justify-center items-center w-full hidden"
         style={{
           backdropFilter: "blur(10px)",
         }}
@@ -100,37 +97,37 @@ export default function RecordView(props: Props) {
           height={50}
         />
       </motion.section>
+      {/* Record details */}
       <motion.section
-        className=" bg-white flex-grow md:p-5 p-0 rounded-xl md:w-fit w-full md:block flex justify-center flex-col"
+        className="bg-white flex-grow md:p-5 p-0 rounded-xl md:w-fit w-full md:block flex justify-center flex-col"
         variants={RVars}
         initial="initial"
         animate="animate"
         exit="exit"
       >
-        <h1 className=" text-7xl text-center font-bold py-7 md:block hidden">
-          {props.record.id}-
-          {props.record.data.mode.booleanValue ? "Manual" : "Autopilot"}
+        {/* Record ID and Mode */}
+        <h1 className="text-7xl text-center font-bold py-7 md:block hidden">
+          {record.id} - {record.data.mode.booleanValue ? "Manual" : "Autopilot"}
         </h1>
-        <h1 className=" text-xl text-center font-bold pb-10 w-full md:hidden block">
-          {props.record.id} <br />
-          {props.record.data.mode.booleanValue ? "Manual" : "Autopilot"}
+        <h1 className="text-xl text-center font-bold pb-10 w-full md:hidden block">
+          {record.id} <br />
+          {record.data.mode.booleanValue ? "Manual" : "Autopilot"}
         </h1>
-        <div className=" md:text-5xl text-xl font-mono pb-4 md:pl-0 pl-5">
-          <p className=" md:text-6xl ">Environment</p>
-          Temperature: {props.record.data.temperature.doubleValue}°C
-          <br />
-          Moisture: {props.record.data.moisture.doubleValue}%
-          <br />
-          Soil moisture: {props.record.data.soilmoisture.integerValue}%
-          <br />
-          Light: {props.record.data.light.integerValue}lx
+        {/* Environment information */}
+        <div className="md:text-5xl text-xl font-mono pb-4 md:pl-0 pl-5">
+          <p className="md:text-6xl">Environment</p>
+          <p>Temperature: {record.data.temperature}°C</p>
+          <p>Moisture: {record.data.moisture}%</p>
+          <p>Soil Moisture: {record.data.soilmoisture}%</p>
+          <p>Light: {record.data.light}lx</p>
         </div>
-        <div className=" md:text-5xl text-xl font-mono md:pl-0 pl-5">
-          <p className=" md:text-6xl">Device status</p>
-          Fan: {props.record.data.fan.booleanValue ? "on" : "off"} <br />
-          Fan speed: {props.record.data.fanspeed.integerValue} <br />
-          Water: {props.record.data.water.booleanValue ? "on" : "off"} <br />
-          Led: {props.record.data.led.booleanValue ? "on" : "off"} <br />
+        {/* Device status */}
+        <div className="md:text-5xl text-xl font-mono md:pl-0 pl-5">
+          <p className="md:text-6xl">Device Status</p>
+          <p>Fan: {record.data.fan ? "On" : "Off"}</p>
+          <p>Fan Speed: {record.data.fanspeed}</p>
+          <p>Water: {record.data.water ? "On" : "Off"}</p>
+          <p>LED: {record.data.led ? "On" : "Off"}</p>
         </div>
       </motion.section>
     </section>

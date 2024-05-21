@@ -21,15 +21,5 @@ type NumberState = {
 
 type StateRecord = {
     id: string,
-    data: {
-        fan: any;
-        fanspeed: any;
-        led: any;
-        light: any;
-        mode: any;
-        moisture: any;
-        soilmoisture: any;
-        temperature: any;
-        water: any;
-    }
+    data: DocumentData
 };
