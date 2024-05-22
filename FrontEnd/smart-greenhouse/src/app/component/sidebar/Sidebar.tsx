@@ -130,7 +130,7 @@ export default function Sidebar() {
               )} rounded-xl flex justify-center items-center relative overflow-hidden`}
               variants={SectionVars}
             >
-              <div className=" absolute bottom-0 flex">
+              <div className=" absolute bottom-0 flex opacity-50">
                 <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-blue-300"></div>
                 <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-blue-100"></div>
                 <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-red-200"></div>
@@ -154,7 +154,7 @@ export default function Sidebar() {
               )} rounded-xl flex justify-center items-center relative overflow-hidden`}
               variants={SectionVars}
             >
-              <div className=" absolute bottom-0 flex">
+              <div className=" absolute bottom-0 flex opacity-50">
                 <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-blue-50"></div>
                 <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-blue-100"></div>
                 <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-blue-200"></div>
@@ -178,7 +178,7 @@ export default function Sidebar() {
               )} rounded-xl flex justify-center items-center relative overflow-hidden`}
               variants={SectionVars}
             >
-              <div className=" absolute bottom-0 flex">
+              <div className=" absolute bottom-0 flex opacity-50">
                 <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-amber-600"></div>
                 <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-amber-700"></div>
                 <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-amber-800"></div>
@@ -202,7 +202,7 @@ export default function Sidebar() {
               )} rounded-xl flex justify-center items-center relative overflow-hidden`}
               variants={SectionVars}
             >
-              <div className=" absolute bottom-0 flex">
+              <div className=" absolute bottom-0 flex opacity-50">
                 <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-neutral-900"></div>
                 <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-neutral-400"></div>
                 <div className=" w-7 h-8 lg:w-10 lg:h-10 bg-slate-50"></div>

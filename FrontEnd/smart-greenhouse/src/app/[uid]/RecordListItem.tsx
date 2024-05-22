@@ -35,19 +35,35 @@ const LiVars = {
   },
 };
 
-const isExcessivelyHighTemperature = (temp: number): boolean => {
+const isLowTemperature = (temp: number): boolean => {
+  return temp <= 0; // Harmful if temperature is below or equal to 0°C
+};
+
+const isHighTemperature = (temp: number): boolean => {
   return temp > 40; // Harmful if temperature is above 40°C
 };
 
-const isExcessivelyHighMoisture = (moisture: number): boolean => {
+const isLowMoisture = (moisture: number): boolean => {
+  return moisture <= 20; // Harmful if moisture is below or equal to 20%
+};
+
+const isHighMoisture = (moisture: number): boolean => {
   return moisture > 80; // Harmful if moisture is above 80%
 };
 
-const isExcessivelyHighSoilMoisture = (soilMoisture: number): boolean => {
+const isLowSoilMoisture = (soilMoisture: number): boolean => {
+  return soilMoisture <= 20; // Harmful if soil moisture is below or equal to 20%
+};
+
+const isHighSoilMoisture = (soilMoisture: number): boolean => {
   return soilMoisture > 80; // Harmful if soil moisture is above 80%
 };
 
-const isExcessivelyHighLight = (light: number): boolean => {
+const isLowLight = (light: number): boolean => {
+  return light <= 100; // Harmful if light intensity is below or equal to 100 lx
+};
+
+const isHighLight = (light: number): boolean => {
   return light > 4000; // Harmful if light intensity is above 4000 lx
 };
 
@@ -90,18 +106,26 @@ export default function RecordListItem({
           </div>
         )}
         <div className=" absolute bottom-0 flex w-full justify-end">
-          {isExcessivelyHighTemperature(record.data.temperature) && (
-            <div className=" text-3xl">🌡️</div>
+          {isLowTemperature(record.data.temperature) && (
+            <div className="text-3xl">❄️</div>
           )}
-          {isExcessivelyHighMoisture(record.data.moisture) && (
+          {isHighTemperature(record.data.temperature) && (
+            <div className="text-3xl">🌡️</div>
+          )}
+          {isLowMoisture(record.data.moisture) && (
+            <div className="text-3xl">💧</div>
+          )}
+          {isHighMoisture(record.data.moisture) && (
             <div className="text-3xl">💦</div>
           )}
-          {isExcessivelyHighSoilMoisture(record.data.soilmoisture) && (
+          {isLowSoilMoisture(record.data.soilmoisture) && (
+            <div className="text-3xl">🌱</div>
+          )}
+          {isHighSoilMoisture(record.data.soilmoisture) && (
             <div className="text-3xl">🌰</div>
           )}
-          {isExcessivelyHighLight(record.data.light) && (
-            <div className="text-3xl">☀️</div>
-          )}
+          {isLowLight(record.data.light) && <div className="text-3xl">🌑</div>}
+          {isHighLight(record.data.light) && <div className="text-3xl">☀️</div>}
         </div>
       </button>
     </motion.li>
