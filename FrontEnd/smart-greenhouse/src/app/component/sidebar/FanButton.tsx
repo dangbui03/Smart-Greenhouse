@@ -42,8 +42,6 @@ export default function FanButton({ fan, setFan, setCLoading }: Props) {
       GetLast("fanspeed"),
     ]);
 
-    console.log(result);
-    console.log(resultV);
     setFan({
       state: result.value === "1" || result.value === "2",
       velocity: +resultV.value,
