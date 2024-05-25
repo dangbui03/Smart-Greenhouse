@@ -117,7 +117,7 @@ const getAdvice = (record: StateRecord) => {
       >
         <TypeAnimation
           sequence={[temperatureAdvice]}
-          speed={50}
+          speed={75}
           wrapper="div"
           cursor={false}
           repeat={0}
@@ -132,7 +132,7 @@ const getAdvice = (record: StateRecord) => {
       >
         <TypeAnimation
           sequence={[moistureAdvice]}
-          speed={50}
+          speed={75}
           wrapper="div"
           cursor={false}
           repeat={0}
@@ -149,7 +149,7 @@ const getAdvice = (record: StateRecord) => {
       >
         <TypeAnimation
           sequence={[soilMoistureAdvice]}
-          speed={50}
+          speed={75}
           wrapper="div"
           cursor={false}
           repeat={0}
@@ -164,7 +164,7 @@ const getAdvice = (record: StateRecord) => {
       >
         <TypeAnimation
           sequence={[lightAdvice]}
-          speed={50}
+          speed={75}
           wrapper="div"
           cursor={false}
           repeat={0}

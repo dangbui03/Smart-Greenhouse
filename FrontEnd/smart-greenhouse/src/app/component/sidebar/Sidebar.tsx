@@ -9,6 +9,7 @@ import LedButton from "./LedButton";
 import WaterButton from "./WaterButton";
 import FanButton from "./FanButton";
 import GetLast from "../../../../action/GetLast";
+import { Toaster } from "react-hot-toast";
 
 const SidebarVars = {
   initital: {
@@ -250,6 +251,27 @@ export default function Sidebar() {
           </motion.aside>
         )}
       </AnimatePresence>
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        gutter={8}
+        containerClassName=""
+        containerStyle={{}}
+        toastOptions={{
+          className: "",
+          duration: 1000,
+          style: {
+            background: "#22c55e",
+            color: "#fff",
+          },
+          success: {
+            duration: 1000,
+          },
+          error: {
+            duration: 1000,
+          },
+        }}
+      />
     </>
   );
 }

@@ -112,17 +112,13 @@ export default function RecordListItem({
           {isHighTemperature(record.data.temperature) && (
             <div className="text-3xl">🌡️</div>
           )}
-          {isLowMoisture(record.data.moisture) && (
+          {(isLowMoisture(record.data.moisture) ||
+            isLowSoilMoisture(record.data.soilmoisture)) && (
             <div className="text-3xl">💧</div>
           )}
-          {isHighMoisture(record.data.moisture) && (
+          {(isHighMoisture(record.data.moisture) ||
+            isHighSoilMoisture(record.data.soilmoisture)) && (
             <div className="text-3xl">💦</div>
-          )}
-          {isLowSoilMoisture(record.data.soilmoisture) && (
-            <div className="text-3xl">🌱</div>
-          )}
-          {isHighSoilMoisture(record.data.soilmoisture) && (
-            <div className="text-3xl">🌰</div>
           )}
           {isLowLight(record.data.light) && <div className="text-3xl">🌑</div>}
           {isHighLight(record.data.light) && <div className="text-3xl">☀️</div>}
